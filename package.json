@@ -1,0 +1,11 @@
+{
+  "name": "joinmarket-api-ts",
+  "version": "0.0.1",
+  "description": "OpenAPI TypeScript types and client for JoinMarket",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "generate": "npx openapi-typescript https://joinmarket-org.github.io/joinmarket-clientserver/api/wallet-rpc.yaml -o ./jm-wallet-rpc.d.ts"
+  },
+  "license": "MIT"
+}

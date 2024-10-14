@@ -7,5 +7,12 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "generate": "npx openapi-typescript https://joinmarket-org.github.io/joinmarket-clientserver/api/wallet-rpc.yaml -o ./jm-wallet-rpc.d.ts"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "openapi-typescript": "^7.4.1",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "openapi-fetch": "^0.12.2"
+  }
 }

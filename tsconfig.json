@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "module": "ESNext", // or "NodeNext"
+        "moduleResolution": "Bundler", // or "NodeNext"
+        "noUncheckedIndexedAccess": true,
+        "allowJs": false,
+        "lib": [
+            "ESNext",
+            "DOM"
+        ],
+    }
+}

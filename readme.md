@@ -4,7 +4,7 @@
 
 ```shell
 npm install
-npm run fetch-schema && npm run generate-types
+npm run openapi:fetch-schema && npm run openapi:generate
 npm run example
 ```
 

@@ -8,7 +8,7 @@ npm run fetch-schema && npm run generate-types
 npm run example
 ```
 
-If you have a running Jam dev environment running:
+If you have a Jam dev environment running:
 
 ```shell
 npm run example
@@ -20,4 +20,5 @@ The project is licensed under the MIT License. See [LICENSE](LICENSE) for detail
 
 ## Resources
 - https://openapi-ts.dev/
-- openapi-fetch: https://openapi-ts.dev/openapi-fetch/
+- openapi-typescript (GitHub): https://github.com/openapi-ts/openapi-typescript
+- openapi-fetch (Website): https://openapi-ts.dev/openapi-fetch/

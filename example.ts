@@ -5,11 +5,11 @@ import createClient from './src/jm-wallet-rpc/index'
 
 const middleware: Middleware = {
   async onRequest({ request, options }) {
-    // request.headers.set("Authorization", `Bearer ${accessToken}`);
-    return undefined // undefined means: "do nothing"
+    // request.headers.set('Authorization', `Bearer ${accessToken}`);
+    return undefined // undefined means: 'do nothing'
   },
   async onResponse({ request, response, options }) {
-    return undefined // undefined means: "do nothing"
+    return undefined // undefined means: 'do nothing'
   },
 }
 
@@ -18,21 +18,28 @@ client.use(middleware)
 
 type FetchResponse<T> = {
   data?: T
-  error?: ErrorResponse<ResponseObjectMap<T>> | components["schemas"]["ErrorMessage"]
+  error?: ErrorResponse<ResponseObjectMap<T>> | components['schemas']['ErrorMessage']
   response: Response
 }
 
-type GetinfoResponse = FetchResponse<components["schemas"]["GetinfoResponse"]>
+type GetinfoResponse = FetchResponse<components['schemas']['GetinfoResponse']>
 
 const getinfo = async () : Promise<GetinfoResponse> => {
   const { data, error, response } = await client.GET('/getinfo')
   return { data, error, response }
 }
 
-type SessionResponse = FetchResponse<components["schemas"]["SessionResponse"]>
+type SessionResponse = FetchResponse<components['schemas']['SessionResponse']>
 
 const session = async () : Promise<SessionResponse> => {
   const { data, error, response } = await client.GET('/session')
+  return { data, error, response }
+}
+
+type ListWalletsResponse = FetchResponse<components['schemas']['ListWalletsResponse']>
+
+const listWallets = async () : Promise<ListWalletsResponse> => {
+  const { data, error, response } = await client.GET('/wallet/all')
   return { data, error, response }
 }
 
@@ -43,4 +50,7 @@ const session = async () : Promise<SessionResponse> => {
 
   const sessionResponse = await session()
   console.log('/session', sessionResponse.data, sessionResponse.error)
+
+  const listWalletsResponse = await listWallets()
+  console.log('/wallet/all', listWalletsResponse.data, listWalletsResponse.error)
 })()

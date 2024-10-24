@@ -7,8 +7,8 @@
   "scripts": {
     "test": "npm run test:ts",
     "test:ts": "tsc --noEmit",
-    "fetch-schema": "wget https://joinmarket-org.github.io/joinmarket-clientserver/api/wallet-rpc.yaml -O ./jm-wallet-rpc.yaml",
-    "generate-types": "npx openapi-typescript ./jm-wallet-rpc.yaml -o ./jm-wallet-rpc.d.ts",
+    "fetch-schema": "wget https://joinmarket-org.github.io/joinmarket-clientserver/api/wallet-rpc.yaml -O ./src/jm-wallet-rpc/jm-wallet-rpc.yaml",
+    "generate-types": "npx openapi-typescript ./src/jm-wallet-rpc/jm-wallet-rpc.yaml -o ./src/jm-wallet-rpc/jm-wallet-rpc.d.ts",
     "example": "npx ts-node ./example.ts"
   },
   "devDependencies": {

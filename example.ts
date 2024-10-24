@@ -1,6 +1,6 @@
 import { ErrorResponse, ResponseObjectMap } from 'openapi-typescript-helpers'
-import type { components } from './jm-wallet-rpc'
-import createClient from './index'
+import type { components } from './src/jm-wallet-rpc/jm-wallet-rpc'
+import createClient from './src/jm-wallet-rpc/index'
 
 const client = createClient({ baseUrl: 'http://localhost:3000/api/v1/' })
 

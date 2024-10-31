@@ -6,8 +6,16 @@ import {
 import { ErrorResponse, ResponseObjectMap } from "openapi-typescript-helpers";
 import type { components } from "./src/jm-wallet-rpc/jm-wallet-rpc";
 import createClient from "./src/jm-wallet-rpc/index";
+import { t, TFunction } from "i18next";
 
 type ApiToken = string;
+interface ApiRequestContext {
+  signal?: AbortSignal;
+}
+type WithWalletFileName = {
+  walletFileName: WalletFileName;
+};
+type WalletRequestContext = ApiRequestContext & WithWalletFileName;
 
 const buildAuthHeader = (token: ApiToken): [string, string] => {
   return ["x-jm-authorization", `Bearer ${token}`];
@@ -63,6 +71,70 @@ type FetchResponse<T> = {
   response: Response;
 };
 
+interface ApiError {
+  message: string;
+}
+
+const errorResolver = (t: TFunction, i18nKey: string | string[]) => ({
+  resolver: (_: Response, reason: string) => `${t(i18nKey)} ${reason}`,
+  fallbackReason: t("global.errors.reason_unknown"),
+});
+
+const extractErrorMessage = async (
+  response: Response,
+  fallbackReason = response.statusText
+): Promise<string> => {
+  try {
+    // The server will answer with a html response instead of json on certain errors.
+    // The situation is mitigated by parsing the returned html.
+    const isHtmlErrorMessage =
+      response.headers && response.headers.get("content-type") === "text/html";
+
+    if (isHtmlErrorMessage) {
+      return await response
+        .text()
+        .then((html) => {
+          var parser = new DOMParser();
+          var doc = parser.parseFromString(html, "text/html");
+          return doc.title || fallbackReason;
+        })
+        .then((reason) => `The server reported a problem: ${reason}`);
+    }
+
+    const { message }: ApiError = await response.json();
+    return message || fallbackReason;
+  } catch (err) {
+    if (process.env.NODE_ENV === "development") {
+      console.warn(
+        "Will use fallback reason - Error while extracting error message from api response:",
+        err
+      );
+    }
+
+    return fallbackReason;
+  }
+};
+
+const DEFAULT_RESOLVER = (res: Response, reason: string) => reason;
+
+class JmApiError extends Error {
+  public response: Response;
+
+  constructor(response: Response, message: string) {
+    super(message);
+    this.response = response;
+  }
+}
+
+const throwResolved = async (
+  response: Response,
+  { resolver = DEFAULT_RESOLVER, fallbackReason = response.statusText } = {}
+): Promise<never> => {
+  const reason = await extractErrorMessage(response, fallbackReason);
+  const errorMessage = resolver(response, reason) || reason;
+  throw new JmApiError(response, errorMessage);
+};
+
 type GetinfoResponse = FetchResponse<components["schemas"]["GetinfoResponse"]>;
 
 const getinfo = async (): Promise<GetinfoResponse> => {
@@ -86,16 +158,11 @@ const listWallets = async (): Promise<ListWalletsResponse> => {
   return { data, error, response };
 };
 
-interface ApiRequestContext {
-  signal?: AbortSignal;
-}
-
 const listWalletsEncapsulated = async ({ signal }: ApiRequestContext) => {
   const { data, error, response } = await client.GET("/wallet/all", { signal });
 
   if (error) {
-    //  Api.Helper.throwError(res, t('wallets.error_loading_failed'))
-    console.error("Error fetching wallets", error);
+    throwResolved(response, errorResolver(t, "wallets.error_loading_failed"));
   }
 
   if (typeof data === "undefined") {
@@ -131,7 +198,7 @@ const postWalletCreate = async (
   });
 
   if (error) {
-    // Helper.throwResolved(response);
+    throwResolved(response);
   }
 
   if (typeof data === "undefined") {
@@ -145,6 +212,34 @@ const postWalletCreate = async (
     ...data,
     walletname,
   };
+};
+
+type DirectSendRequest = components["schemas"]["DirectSendRequest"];
+
+const postDirectSend = async (
+  { signal, walletFileName }: WalletRequestContext,
+  req: DirectSendRequest,
+  errorMessage: string
+) => {
+  const { data, error, response } = await client.POST(
+    "/wallet/{walletname}/taker/direct-send",
+    {
+      params: { path: { walletname: walletFileName } },
+      body: req,
+      signal,
+    }
+  );
+
+  if (error) {
+    throwResolved(response, errorResolver(t, errorMessage));
+  }
+
+  if (typeof data === "undefined") {
+    // do something here
+    throw new Error();
+  }
+
+  return data;
 };
 
 // https://openapi-ts.dev/openapi-fetch/
@@ -165,7 +260,7 @@ const postWalletCreate = async (
   const postWalletCreateData = await postWalletCreate(
     { signal: undefined },
     {
-      walletname: "testwallet",
+      walletname: "testwallet3",
       password: "test",
       wallettype: "sw-fb",
     }
@@ -178,4 +273,14 @@ const postWalletCreate = async (
   });
 
   console.log("listWalletsEncapsulated", listWalletsEncapsulatedData);
+
+  // const postDirectSendData = await postDirectSend(
+  //   { signal: undefined, walletFileName: "testwallet.jmdat" },
+  //   {
+  //     amount_sats: 100000,
+  //     destination: "bcrt1qujp2x2fv437493sm25gfjycns7d39exjnpptzw",
+  //     mixdepth: 0,
+  //   },
+  //   "earn.fidelity_bond.error_creating_fidelity_bond" // pass in a different error message depending on the where this is called
+  // );
 })();

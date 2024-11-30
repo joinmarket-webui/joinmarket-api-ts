@@ -12,13 +12,13 @@
     "example": "npx ts-node ./example.ts"
   },
   "devDependencies": {
-    "@types/node": "^22.8.5",
+    "@types/node": "^22.10.1",
     "i18next": "^24.0.2",
-    "openapi-typescript": "^7.4.1",
-    "openapi-typescript-helpers": "^0.0.13",
-    "typescript": "^5.6.3"
+    "openapi-typescript": "^7.4.3",
+    "openapi-typescript-helpers": "^0.0.15",
+    "typescript": "^5.7.2"
   },
   "dependencies": {
-    "openapi-fetch": "^0.12.2"
+    "openapi-fetch": "^0.13.0"
   }
 }

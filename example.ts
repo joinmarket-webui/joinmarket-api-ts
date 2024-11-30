@@ -38,7 +38,7 @@ const jamAuthMiddleware = createJamAuthenticationMiddleware('example')
 client.use(jamAuthMiddleware) // example of registering the auth middleware
 client.eject(jamAuthMiddleware) // example of ejecting the auth middleware again (it is NOT used!)
 
-type FetchResponse<T> = {
+type FetchResponse<T extends Record<string | number, any>> = {
   data?: T
   error?: ErrorResponse<ResponseObjectMap<T>> | components['schemas']['ErrorMessage']
   response: Response

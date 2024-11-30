@@ -13,12 +13,12 @@
   },
   "devDependencies": {
     "@types/node": "^22.8.5",
+    "i18next": "^24.0.2",
     "openapi-typescript": "^7.4.1",
     "openapi-typescript-helpers": "^0.0.13",
     "typescript": "^5.6.3"
   },
   "dependencies": {
-    "i18next": "^23.16.4",
     "openapi-fetch": "^0.12.2"
   }
 }

@@ -1,9 +1,12 @@
 {
     "compilerOptions": {
+      "outDir": "./dist",
       "target": "es5",
       "module": "esnext",
       "moduleResolution": "node",
-      "strict": true
+      "strict": true,
+      "allowJs": false,
+      "declaration": true,
     },
     "include": [
       "./src/**/*"

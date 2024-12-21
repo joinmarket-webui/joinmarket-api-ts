@@ -1,8 +1,7 @@
 {
-  "name": "joinmarket-api-ts",
+  "name": "@joinmarket-webui/joinmarket-api-ts",
   "version": "0.0.1",
   "description": "OpenAPI TypeScript types and client for JoinMarket",
-  "private": true,
   "license": "MIT",
   "scripts": {
     "test": "npm run test:ts",

@@ -20,5 +20,6 @@
 .env.production.local
 
 npm-debug.log*
+openapi-ts-error-*.log
 
 .idea/

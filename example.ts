@@ -1,7 +1,7 @@
-import { ClientOptions, Middleware, MiddlewareCallbackParams } from 'openapi-fetch'
-import { ErrorResponse, ResponseObjectMap } from 'openapi-typescript-helpers'
-import type { components } from './src/jm-wallet-rpc/jm-wallet-rpc'
-import createClient from './src/jm-wallet-rpc/index'
+import { ClientOptions } from './src/generated/client/types.gen'
+import * as sdk from './src/generated/client/sdk.gen';
+import { createClient } from './src/index'
+
 
 type ApiToken = string
 
@@ -9,61 +9,39 @@ const buildAuthHeader = (token: ApiToken): [string, string] => {
   return ['x-jm-authorization', `Bearer ${token}`]
 }
 
-const loggingMiddleware: Middleware = {
-  async onRequest({ id, schemaPath, request } : MiddlewareCallbackParams) {
-    console.debug('[onRequest]', id, schemaPath, request.url)
-    return undefined // undefined means: 'do nothing'
-  },
-  async onResponse({ id, schemaPath, response }: MiddlewareCallbackParams & { response: Response }) {
-    console.debug('[onResponse]', id, schemaPath, response.status, response.statusText, response.ok)
-    return undefined // undefined means: 'do nothing'
-  },
+async function loggingRequestInterceptor(request: Request) {
+  console.debug('[onRequest]', request)
+  return request
+}
+async function loggingResponseInterceptor(response: Response) {
+  console.debug('[onResponse]', response)
+  return response
 }
 
-const createJamAuthenticationMiddleware : (apiToken: ApiToken) => Middleware = (apiToken) => ({
-  async onRequest({ request } : MiddlewareCallbackParams) {
+const createJamAuthenticationMiddleware = (apiToken: ApiToken) => {
+  return async (request) => {
     const authHeader = buildAuthHeader(apiToken)
     request.headers.set(authHeader[0], authHeader[1])
     return request
   }
-})
+}
 
 const clientOptions: ClientOptions = {
   baseUrl: 'http://localhost:3000/api/v1/',
 }
 const client = createClient(clientOptions)
-client.use(loggingMiddleware)
+
+client.interceptors.request.use(loggingRequestInterceptor);
+client.interceptors.response.use(loggingResponseInterceptor);
 
 const jamAuthMiddleware = createJamAuthenticationMiddleware('example')
-client.use(jamAuthMiddleware) // example of registering the auth middleware
-client.eject(jamAuthMiddleware) // example of ejecting the auth middleware again (it is NOT used!)
+const jamAuthInterceptorId = client.interceptors.request.use(jamAuthMiddleware);
+client.interceptors.request.use(jamAuthMiddleware) // example of registering the auth middleware
+client.interceptors.request.eject(jamAuthInterceptorId) // example of ejecting the auth middleware again (it is NOT used!)
 
-type FetchResponse<T extends Record<string | number, any>> = {
-  data?: T
-  error?: ErrorResponse<ResponseObjectMap<T>> | components['schemas']['ErrorMessage']
-  response: Response
-}
-
-type GetinfoResponse = FetchResponse<components['schemas']['GetinfoResponse']>
-
-const getinfo = async () : Promise<GetinfoResponse> => {
-  const { data, error, response } = await client.GET('/getinfo')
-  return { data, error, response }
-}
-
-type SessionResponse = FetchResponse<components['schemas']['SessionResponse']>
-
-const session = async () : Promise<SessionResponse> => {
-  const { data, error, response } = await client.GET('/session')
-  return { data, error, response }
-}
-
-type ListWalletsResponse = FetchResponse<components['schemas']['ListWalletsResponse']>
-
-const listWallets = async () : Promise<ListWalletsResponse> => {
-  const { data, error, response } = await client.GET('/wallet/all')
-  return { data, error, response }
-}
+const getinfo = async () => sdk.version({ client })
+const session = async () => sdk.session({ client })
+const listWallets = async () => sdk.listwallets({ client })
 
 // https://openapi-ts.dev/openapi-fetch/
 ;(async function() {

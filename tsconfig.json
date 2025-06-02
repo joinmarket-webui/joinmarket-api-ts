@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
       "outDir": "./dist",
-      "target": "es5",
+      "target": "es2022",
       "module": "esnext",
       "moduleResolution": "node",
       "strict": true,

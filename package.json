@@ -9,8 +9,8 @@
     "test": "npm run test:ts",
     "test:ts": "tsc --noEmit",
     "build": "tsc",
-    "openapi:fetch-schema": "wget https://joinmarket-org.github.io/joinmarket-clientserver/api/wallet-rpc.yaml -O ./contrib/jm-wallet-rpc/jm-wallet-rpc.yaml",
-    "openapi:generate": "npx openapi-typescript ./contrib/jm-wallet-rpc/jm-wallet-rpc.yaml -o ./src/jm-wallet-rpc/jm-wallet-rpc.ts",
+    "openapi-ts:fetch-schema": "wget https://joinmarket-org.github.io/joinmarket-clientserver/api/wallet-rpc.yaml -O ./contrib/jm-wallet-rpc.yaml",
+    "openapi-ts": "openapi-ts",
     "example": "npx ts-node ./example.ts"
   },
   "homepage": "https://github.com/joinmarket-webui/joinmarket-api-ts",
@@ -26,13 +26,12 @@
     "access": "public"
   },
   "devDependencies": {
+    "@hey-api/openapi-ts": "^0.69.2",
     "@types/node": "^22.10.2",
-    "i18next": "^24.2.0",
-    "openapi-typescript": "^7.4.4",
-    "openapi-typescript-helpers": "^0.0.15",
     "typescript": "^5.7.2"
   },
   "dependencies": {
-    "openapi-fetch": "^0.13.3"
+    "@hey-api/client-fetch": "^0.11.0",
+    "@tanstack/react-query": "^5.79.2"
   }
 }

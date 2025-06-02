@@ -28,6 +28,7 @@
   "devDependencies": {
     "@hey-api/openapi-ts": "^0.69.2",
     "@types/node": "^22.10.2",
+    "@types/react": "^19.1.6",
     "typescript": "^5.7.2"
   },
   "dependencies": {

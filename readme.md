@@ -4,7 +4,7 @@
 
 ```shell
 npm install
-npm run openapi:fetch-schema && npm run openapi:generate
+npm run openapi-ts:fetch-schema && npm run openapi-ts
 npm run example
 ```
 
@@ -19,6 +19,8 @@ npm run example
 The project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
 ## Resources
-- https://openapi-ts.dev/
-- openapi-typescript (GitHub): https://github.com/openapi-ts/openapi-typescript
-- openapi-fetch (Website): https://openapi-ts.dev/openapi-fetch/
+- https://heyapi.dev/openapi-ts/get-started
+- @hey-api/openapi-ts (GitHub): https://github.com/hey-api/openapi-ts
+- @hey-api/client-fetch (Docs): https://heyapi.dev/openapi-ts/clients/fetch
+- @tanstack/react-query: https://github.com/TanStack/query
+

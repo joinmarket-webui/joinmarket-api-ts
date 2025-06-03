@@ -19,16 +19,17 @@ async function loggingResponseInterceptor(response: Response) {
 }
 
 const createJamAuthenticationMiddleware = (apiToken: ApiToken) => {
-  return async (request) => {
+  return async (request: Request) => {
     const authHeader = buildAuthHeader(apiToken)
     request.headers.set(authHeader[0], authHeader[1])
     return request
   }
 }
 
-const clientOptions: ClientOptions = {
-  baseUrl: 'http://localhost:3000/api/v1/',
-}
+const baseUrl = 'http://localhost:3000/api/v1/'
+
+console.info(`Setting up client to ${baseUrl}`)
+const clientOptions: ClientOptions = { baseUrl }
 const client = createClient(clientOptions)
 
 client.interceptors.request.use(loggingRequestInterceptor);
@@ -43,14 +44,16 @@ const getinfo = async () => sdk.version({ client })
 const session = async () => sdk.session({ client })
 const listWallets = async () => sdk.listwallets({ client })
 
-// https://openapi-ts.dev/openapi-fetch/
 ;(async function() {
+  console.info('Request to "/getinfo"…')
   const infoResponse = await getinfo()
-  console.log('/getinfo', infoResponse.data, infoResponse.error)
+  console.info('/getinfo', infoResponse.data, infoResponse.error)
 
+  console.info('Request to "/session"…')
   const sessionResponse = await session()
-  console.log('/session', sessionResponse.data, sessionResponse.error)
+  console.info('/session', sessionResponse.data, sessionResponse.error)
 
+  console.info('Request to "/wallet/all"…')
   const listWalletsResponse = await listWallets()
-  console.log('/wallet/all', listWalletsResponse.data, listWalletsResponse.error)
+  console.info('/wallet/all', listWalletsResponse.data, listWalletsResponse.error)
 })()

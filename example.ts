@@ -1,7 +1,6 @@
 import { ClientOptions } from './src/generated/client/types.gen'
-import * as sdk from './src/generated/client/sdk.gen';
+import * as sdk from './src/generated/client/sdk.gen'
 import { createClient } from './src/index'
-
 
 type ApiToken = string
 
@@ -27,22 +26,22 @@ const createJamAuthenticationMiddleware = (apiToken: ApiToken) => {
 }
 
 const baseUrl = 'http://localhost:3000/api/v1/'
-
-console.info(`Setting up client to ${baseUrl}`)
 const clientOptions: ClientOptions = { baseUrl }
+
+console.info('Setting up JM API client…', clientOptions)
 const client = createClient(clientOptions)
 
-client.interceptors.request.use(loggingRequestInterceptor);
-client.interceptors.response.use(loggingResponseInterceptor);
+client.interceptors.request.use(loggingRequestInterceptor)
+client.interceptors.response.use(loggingResponseInterceptor)
 
 const jamAuthMiddleware = createJamAuthenticationMiddleware('example')
-const jamAuthInterceptorId = client.interceptors.request.use(jamAuthMiddleware);
+const jamAuthInterceptorId = client.interceptors.request.use(jamAuthMiddleware)
 client.interceptors.request.use(jamAuthMiddleware) // example of registering the auth middleware
 client.interceptors.request.eject(jamAuthInterceptorId) // example of ejecting the auth middleware again (it is NOT used!)
 
 const getinfo = async () => sdk.version({ client })
 const session = async () => sdk.session({ client })
-const listWallets = async () => sdk.listwallets({ client })
+const listwallets = async () => sdk.listwallets({ client })
 
 ;(async function() {
   console.info('Request to "/getinfo"…')
@@ -54,6 +53,6 @@ const listWallets = async () => sdk.listwallets({ client })
   console.info('/session', sessionResponse.data, sessionResponse.error)
 
   console.info('Request to "/wallet/all"…')
-  const listWalletsResponse = await listWallets()
-  console.info('/wallet/all', listWalletsResponse.data, listWalletsResponse.error)
+  const listwalletsResponse = await listwallets()
+  console.info('/wallet/all', listwalletsResponse.data, listwalletsResponse.error)
 })()

@@ -6,9 +6,12 @@
       "moduleResolution": "node",
       "strict": true,
       "allowJs": false,
-      "declaration": true,
+      "declaration": true
     },
     "include": [
-      "./src/**/*"
+      "./src/**/*.ts"
+    ],
+    "exclude": [
+      "node_modules"
     ]
 }

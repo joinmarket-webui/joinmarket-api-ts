@@ -4,14 +4,13 @@
   "description": "OpenAPI TypeScript types and client for JoinMarket",
   "license": "MIT",
   "author": "JoinMarket WebUI Org.",
-  "types": "./dist/jm-wallet-rpc.d.ts",
   "scripts": {
     "test": "npm run test:ts",
     "test:ts": "tsc --noEmit",
     "build": "tsc",
     "openapi-ts:fetch-schema": "wget https://joinmarket-org.github.io/joinmarket-clientserver/api/wallet-rpc.yaml -O ./contrib/jm-wallet-rpc.yaml",
     "openapi-ts": "openapi-ts",
-    "example": "npx ts-node ./example.ts"
+    "example": "npx tsx ./example.ts"
   },
   "homepage": "https://github.com/joinmarket-webui/joinmarket-api-ts",
   "repository": {
@@ -25,14 +24,15 @@
     "registry": "https://npm.pkg.github.com/",
     "access": "public"
   },
+  "dependencies": {
+    "@hey-api/client-fetch": "^0.11.0",
+    "@tanstack/react-query": "^5.79.2"
+  },
   "devDependencies": {
     "@hey-api/openapi-ts": "^0.69.2",
     "@types/node": "^22.10.2",
     "@types/react": "^19.1.6",
+    "tsx": "^4.19.4",
     "typescript": "^5.7.2"
-  },
-  "dependencies": {
-    "@hey-api/client-fetch": "^0.11.0",
-    "@tanstack/react-query": "^5.79.2"
   }
 }

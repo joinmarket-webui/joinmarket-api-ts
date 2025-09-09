@@ -25,7 +25,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@hey-api/client-fetch": "0.13.1",
     "@tanstack/react-query": "5.81.5"
   },
   "devDependencies": {

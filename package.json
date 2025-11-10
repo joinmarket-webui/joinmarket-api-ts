@@ -4,10 +4,16 @@
   "description": "OpenAPI TypeScript types and client for JoinMarket",
   "license": "MIT",
   "author": "JoinMarket WebUI Org.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "npm run test:ts",
     "test:ts": "tsc --noEmit",
-    "build": "tsc",
+    "build": "tsup",
     "openapi-ts:fetch-schema": "wget https://joinmarket-org.github.io/joinmarket-clientserver/api/wallet-rpc.yaml -O ./contrib/jm-wallet-rpc.yaml",
     "openapi-ts": "openapi-ts",
     "example": "npx tsx ./example.ts"
@@ -31,6 +37,7 @@
     "@hey-api/openapi-ts": "0.82.5",
     "@types/node": "24.0.10",
     "@types/react": "19.1.8",
+    "tsup": "^8.5.0",
     "tsx": "4.20.3",
     "typescript": "5.8.3"
   }

@@ -1,9 +1,8 @@
 name: Release
 
 on:
-  push:
-    tags:
-      - 'v*'
+  release:
+    types: [published]
 
 jobs:
   release:
@@ -25,7 +24,7 @@ jobs:
           scope: '@joinmarket-webui'
         
       - run: |
-          npm install
+          npm clean-install
           npm run build
           npm publish --verbose
 

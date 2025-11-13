@@ -9,8 +9,24 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./jm": {
+      "import":"./dist/generated/client/index.js",
+      "types":"./dist/generated/client/index.d.ts"
+    },
+    "./core": {
+      "import":"./dist/generated/client/core/index.js",
+      "types":"./dist/generated/client/core/index.d.ts"
+    },
+    "./client": {
+      "import":"./dist/generated/client/client/index.js",
+      "types":"./dist/generated/client/client/index.d.ts"
+    },
+    "./@tanstack/react-query": {
+      "import":"./dist/generated/client/@tanstack/react-query.gen.js",
+      "types":"./dist/generated/client/@tanstack/react-query.gen.d.ts"
     }
   },
   "files": [

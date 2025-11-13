@@ -22,10 +22,14 @@ jobs:
           node-version: 'v24.11.1'
           registry-url: 'https://npm.pkg.github.com'
           scope: '@joinmarket-webui'
-        
-      - run: |
-          npm clean-install
-          npm run build
-          npm publish --access public --verbose
+      
+      - name: Install
+        run: npm clean-install
+      
+      - name: Build
+        run: npm run build
+      
+      - name: Publish
+        run: npm publish --access public --verbose
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

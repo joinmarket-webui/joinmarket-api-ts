@@ -26,6 +26,6 @@ jobs:
       - run: |
           npm clean-install
           npm run build
-          npm publish --verbose
+          npm publish --access public --verbose
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -27,7 +27,3 @@ jobs:
           npm clean-install
           npm run build
           npm publish --verbose
-
-      - run: npx changelogithub
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

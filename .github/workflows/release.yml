@@ -7,6 +7,7 @@ on:
 jobs:
   release:
     permissions:
+      id-token: write
       contents: write
       packages: write
 
@@ -31,9 +32,7 @@ jobs:
         run: npm run build
 
       - name: Publish to npm Registry
-        run: |
-          npm set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
-          npm run publish:npm
+        run: npm run publish:npm
 
       - name: Publish to Github Registry
         run: |

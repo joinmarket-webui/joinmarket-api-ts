@@ -5,6 +5,13 @@
   "license": "MIT",
   "author": "JoinMarket WebUI Org.",
   "type": "module",
+  "keywords": [
+    "joinmarket",
+    "bitcoin",
+    "rpc",
+    "api",
+    "client"
+  ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {

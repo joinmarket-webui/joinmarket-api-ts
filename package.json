@@ -53,15 +53,21 @@
   "publishConfig": {
     "access": "public"
   },
-  "optionalDependencies": {
-    "@tanstack/react-query": "5.90.9"
-  },
   "devDependencies": {
     "@hey-api/openapi-ts": "0.87.5",
+    "@tanstack/react-query": "5.90.9",
     "@types/node": "24.10.1",
     "@types/react": "19.2.5",
     "tsup": "8.5.1",
     "tsx": "4.20.6",
     "typescript": "5.9.3"
+  },
+  "peerDependencies": {
+    "@tanstack/react-query": "$@tanstack/react-query"
+  },
+  "peerDependenciesMeta": {
+    "@tanstack/react-query": {
+      "optional": true
+    }
   }
 }

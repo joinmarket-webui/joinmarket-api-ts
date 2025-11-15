@@ -7,6 +7,7 @@ on:
 jobs:
   release:
     permissions:
+      id-token: write
       contents: write
       packages: write
 
@@ -22,7 +23,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 'v24.11.1'
-          registry-url: 'https://npm.pkg.github.com'
           scope: '@joinmarket-webui'
 
       - name: Install
@@ -33,10 +33,8 @@ jobs:
 
       - name: Publish to npm Registry
         run: npm run publish:npm
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish to Github Registry
-        run: npm run publish:ghr
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm set //npm.pkg.github.com/:_authToken ${{ secrets.GITHUB_TOKEN }}
+          npm run publish:ghr

@@ -39,8 +39,8 @@
     "openapi-ts:fetch-schema": "wget https://joinmarket-org.github.io/joinmarket-clientserver/api/wallet-rpc.yaml -O ./contrib/jm-wallet-rpc.yaml",
     "openapi-ts": "openapi-ts",
     "example": "npx tsx ./example.ts",
-    "publish:npm": "npm publish --access public --@joinmarket-webui:registry=https://registry.npmjs.org",
-    "publish:ghr": "npm publish --access public --@joinmarket-webui:registry=https://npm.pkg.github.com"
+    "publish:npm": "npm publish --ignore-scripts --access public --@joinmarket-webui:registry=https://registry.npmjs.org",
+    "publish:ghr": "npm publish --ignore-scripts --access public --@joinmarket-webui:registry=https://npm.pkg.github.com"
   },
   "homepage": "https://github.com/joinmarket-webui/joinmarket-api-ts",
   "repository": {

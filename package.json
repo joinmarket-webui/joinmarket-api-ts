@@ -53,7 +53,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
+  "optionalDependencies": {
     "@tanstack/react-query": "5.90.9"
   },
   "devDependencies": {

@@ -113,12 +113,10 @@ const createQueryKey = <TOptions extends Options>(id: string, options?: TOptions
     if (options?.query) {
         params.query = options.query;
     }
-    return [
-        params
-    ];
+    return [params];
 };
 
-export const lockwalletQueryKey = (options: Options<LockwalletData>) => createQueryKey("lockwallet", options);
+export const lockwalletQueryKey = (options: Options<LockwalletData>) => createQueryKey('lockwallet', options);
 
 /**
  * block access to a currently decrypted wallet
@@ -138,7 +136,7 @@ export const lockwalletOptions = (options: Options<LockwalletData>) => queryOpti
     queryKey: lockwalletQueryKey(options)
 });
 
-export const displaywalletQueryKey = (options: Options<DisplaywalletData>) => createQueryKey("displaywallet", options);
+export const displaywalletQueryKey = (options: Options<DisplaywalletData>) => createQueryKey('displaywallet', options);
 
 /**
  * get detailed breakdown of wallet contents by account.
@@ -158,7 +156,7 @@ export const displaywalletOptions = (options: Options<DisplaywalletData>) => que
     queryKey: displaywalletQueryKey(options)
 });
 
-export const sessionQueryKey = (options?: Options<SessionData>) => createQueryKey("session", options);
+export const sessionQueryKey = (options?: Options<SessionData>) => createQueryKey('session', options);
 
 /**
  * get current status of backend
@@ -178,7 +176,7 @@ export const sessionOptions = (options?: Options<SessionData>) => queryOptions<S
     queryKey: sessionQueryKey(options)
 });
 
-export const versionQueryKey = (options?: Options<VersionData>) => createQueryKey("version", options);
+export const versionQueryKey = (options?: Options<VersionData>) => createQueryKey('version', options);
 
 /**
  * get info on backend
@@ -198,7 +196,7 @@ export const versionOptions = (options?: Options<VersionData>) => queryOptions<V
     queryKey: versionQueryKey(options)
 });
 
-export const listwalletsQueryKey = (options?: Options<ListwalletsData>) => createQueryKey("listwallets", options);
+export const listwalletsQueryKey = (options?: Options<ListwalletsData>) => createQueryKey('listwallets', options);
 
 /**
  * get current available wallets
@@ -218,7 +216,7 @@ export const listwalletsOptions = (options?: Options<ListwalletsData>) => queryO
     queryKey: listwalletsQueryKey(options)
 });
 
-export const yieldgenreportQueryKey = (options?: Options<YieldgenreportData>) => createQueryKey("yieldgenreport", options);
+export const yieldgenreportQueryKey = (options?: Options<YieldgenreportData>) => createQueryKey('yieldgenreport', options);
 
 /**
  * get latest report on yield generating activity
@@ -239,7 +237,7 @@ export const yieldgenreportOptions = (options?: Options<YieldgenreportData>) => 
     queryKey: yieldgenreportQueryKey(options)
 });
 
-export const getaddressQueryKey = (options: Options<GetaddressData>) => createQueryKey("getaddress", options);
+export const getaddressQueryKey = (options: Options<GetaddressData>) => createQueryKey('getaddress', options);
 
 /**
  * get a fresh address in the given account for depositing funds.
@@ -259,7 +257,7 @@ export const getaddressOptions = (options: Options<GetaddressData>) => queryOpti
     queryKey: getaddressQueryKey(options)
 });
 
-export const rescanblockchainQueryKey = (options: Options<RescanblockchainData>) => createQueryKey("rescanblockchain", options);
+export const rescanblockchainQueryKey = (options: Options<RescanblockchainData>) => createQueryKey('rescanblockchain', options);
 
 /**
  * Rescan the blockchain from a given blockheight
@@ -279,7 +277,7 @@ export const rescanblockchainOptions = (options: Options<RescanblockchainData>) 
     queryKey: rescanblockchainQueryKey(options)
 });
 
-export const getrescaninfoQueryKey = (options: Options<GetrescaninfoData>) => createQueryKey("getrescaninfo", options);
+export const getrescaninfoQueryKey = (options: Options<GetrescaninfoData>) => createQueryKey('getrescaninfo', options);
 
 /**
  * get the current rescan status
@@ -299,7 +297,7 @@ export const getrescaninfoOptions = (options: Options<GetrescaninfoData>) => que
     queryKey: getrescaninfoQueryKey(options)
 });
 
-export const gettimelockaddressQueryKey = (options: Options<GettimelockaddressData>) => createQueryKey("gettimelockaddress", options);
+export const gettimelockaddressQueryKey = (options: Options<GettimelockaddressData>) => createQueryKey('gettimelockaddress', options);
 
 /**
  * get a fresh timelock address
@@ -319,7 +317,7 @@ export const gettimelockaddressOptions = (options: Options<GettimelockaddressDat
     queryKey: gettimelockaddressQueryKey(options)
 });
 
-export const listutxosQueryKey = (options: Options<ListutxosData>) => createQueryKey("listutxos", options);
+export const listutxosQueryKey = (options: Options<ListutxosData>) => createQueryKey('listutxos', options);
 
 /**
  * list details of all utxos currently in the wallet.
@@ -377,7 +375,7 @@ export const startmakerMutation = (options?: Partial<Options<StartmakerData>>): 
     return mutationOptions;
 };
 
-export const stopmakerQueryKey = (options: Options<StopmakerData>) => createQueryKey("stopmaker", options);
+export const stopmakerQueryKey = (options: Options<StopmakerData>) => createQueryKey('stopmaker', options);
 
 /**
  * stop the yield generator service
@@ -416,7 +414,7 @@ export const docoinjoinMutation = (options?: Partial<Options<DocoinjoinData>>): 
     return mutationOptions;
 };
 
-export const getscheduleQueryKey = (options: Options<GetscheduleData>) => createQueryKey("getschedule", options);
+export const getscheduleQueryKey = (options: Options<GetscheduleData>) => createQueryKey('getschedule', options);
 
 /**
  * get the schedule that is currently running
@@ -455,7 +453,7 @@ export const runscheduleMutation = (options?: Partial<Options<RunscheduleData>>)
     return mutationOptions;
 };
 
-export const stopcoinjoinQueryKey = (options: Options<StopcoinjoinData>) => createQueryKey("stopcoinjoin", options);
+export const stopcoinjoinQueryKey = (options: Options<StopcoinjoinData>) => createQueryKey('stopcoinjoin', options);
 
 /**
  * stop a running coinjoin attempt
@@ -532,7 +530,7 @@ export const freezeMutation = (options?: Partial<Options<FreezeData>>): UseMutat
     return mutationOptions;
 };
 
-export const getseedQueryKey = (options: Options<GetseedData>) => createQueryKey("getseed", options);
+export const getseedQueryKey = (options: Options<GetseedData>) => createQueryKey('getseed', options);
 
 /**
  * get the mnemonic recovery phrase with the optional passphrase

@@ -28,7 +28,7 @@ const createJamAuthenticationMiddleware = (apiToken: ApiToken) => {
 // allow self sign certs
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'
 
-const baseUrl = 'https://127.0.0.1:28183/api/v1/'
+const baseUrl = 'https://127.0.0.1:28183'
 const clientOptions: ClientOptions = { baseUrl }
 
 console.info('Setting up JM API client…', clientOptions)

@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { ConfiggetData, ConfiggetErrors, ConfiggetResponses, ConfigsettingData, ConfigsettingErrors, ConfigsettingResponses, CreatewalletData, CreatewalletErrors, CreatewalletResponses, DirectsendData, DirectsendErrors, DirectsendResponses, DisplaywalletData, DisplaywalletErrors, DisplaywalletResponses, DocoinjoinData, DocoinjoinErrors, DocoinjoinResponses, FreezeData, FreezeErrors, FreezeResponses, GetaddressData, GetaddressErrors, GetaddressResponses, GetrescaninfoData, GetrescaninfoErrors, GetrescaninfoResponses, GetscheduleData, GetscheduleErrors, GetscheduleResponses, GetseedData, GetseedErrors, GetseedResponses, GettimelockaddressData, GettimelockaddressErrors, GettimelockaddressResponses, ListutxosData, ListutxosErrors, ListutxosResponses, ListwalletsData, ListwalletsErrors, ListwalletsResponses, LockwalletData, LockwalletErrors, LockwalletResponses, RecoverwalletData, RecoverwalletErrors, RecoverwalletResponses, RescanblockchainData, RescanblockchainErrors, RescanblockchainResponses, RunscheduleData, RunscheduleErrors, RunscheduleResponses, SessionData, SessionErrors, SessionResponses, StartmakerData, StartmakerErrors, StartmakerResponses, StopcoinjoinData, StopcoinjoinErrors, StopcoinjoinResponses, StopmakerData, StopmakerErrors, StopmakerResponses, TokenData, TokenErrors, TokenResponses, UnlockwalletData, UnlockwalletErrors, UnlockwalletResponses, VersionData, VersionResponses, YieldgenreportData, YieldgenreportErrors, YieldgenreportResponses } from './types.gen';
+import type { ConfiggetData, ConfiggetErrors, ConfiggetResponses, ConfigsettingData, ConfigsettingErrors, ConfigsettingResponses, CorsPreflightOptionsData, CorsPreflightOptionsResponses, CreatewalletData, CreatewalletErrors, CreatewalletResponses, DirectsendData, DirectsendErrors, DirectsendResponses, DisplaywalletData, DisplaywalletErrors, DisplaywalletResponses, DocoinjoinData, DocoinjoinErrors, DocoinjoinResponses, FreezeData, FreezeErrors, FreezeResponses, GetaddressData, GetaddressErrors, GetaddressResponses, GetlogsData, GetlogsResponses, GetOrderbookApiV1ObwatchOrderbookJsonGetData, GetOrderbookApiV1ObwatchOrderbookJsonGetResponses, GetOrderbookObwatchOrderbookJsonGetData, GetOrderbookObwatchOrderbookJsonGetResponses, GetrescaninfoData, GetrescaninfoErrors, GetrescaninfoResponses, GetseedData, GetseedErrors, GetseedResponses, GettimelockaddressData, GettimelockaddressErrors, GettimelockaddressResponses, ListutxosData, ListutxosErrors, ListutxosResponses, ListwalletsData, ListwalletsResponses, LockwalletData, LockwalletErrors, LockwalletResponses, RecoverwalletData, RecoverwalletErrors, RecoverwalletResponses, RefreshOrderbookGetApiV1ObwatchRefreshorderbookGetData, RefreshOrderbookGetApiV1ObwatchRefreshorderbookGetResponses, RefreshOrderbookGetObwatchRefreshorderbookGetData, RefreshOrderbookGetObwatchRefreshorderbookGetResponses, RefreshOrderbookPostApiV1ObwatchRefreshorderbookPostData, RefreshOrderbookPostApiV1ObwatchRefreshorderbookPostResponses, RefreshOrderbookPostObwatchRefreshorderbookPostData, RefreshOrderbookPostObwatchRefreshorderbookPostResponses, RescanblockchainData, RescanblockchainErrors, RescanblockchainResponses, SessionData, SessionResponses, SignmessageData, SignmessageErrors, SignmessageResponses, StartmakerData, StartmakerErrors, StartmakerResponses, StopcoinjoinData, StopcoinjoinErrors, StopcoinjoinResponses, StopmakerData, StopmakerErrors, StopmakerResponses, TokenData, TokenErrors, TokenResponses, TumblerplanData, TumblerplandeleteData, TumblerplandeleteErrors, TumblerplandeleteResponses, TumblerplanErrors, TumblerplanResponses, TumblerstartData, TumblerstartErrors, TumblerstartResponses, TumblerstatusData, TumblerstatusErrors, TumblerstatusResponses, TumblerstopData, TumblerstopErrors, TumblerstopResponses, UnlockwalletData, UnlockwalletErrors, UnlockwalletResponses, VersionData, VersionResponses, WallethistoryData, WallethistoryErrors, WallethistoryResponses, YieldgenreportData, YieldgenreportResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -19,56 +19,64 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
 };
 
 /**
- * The token endpoint is used by the client to obtain an access token using a grant such as refresh token
+ * Get Info
  *
- * Give a refresh token and get back both an access and refresh token. On initially creating, unlocking or recovering a wallet, store both the refresh and access tokens, the latter is valid for only 30 minutes (must be used for any authenticated call) while the former is for 4 hours (can only be used in the refresh request parameters). Use /token endpoint on a regular basis to get new access and refresh tokens, ideally before access token expiration to avoid authentication errors and in any case, before refresh token expiration. The newly issued tokens must be used in subsequent calls since operation invalidates previously issued tokens.
- *
+ * Return backend version information.
  */
-export const token = <ThrowOnError extends boolean = false>(options?: Options<TokenData, ThrowOnError>) => (options?.client ?? client).post<TokenResponses, TokenErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/token',
+export const version = <ThrowOnError extends boolean = false>(options?: Options<VersionData, ThrowOnError>) => (options?.client ?? client).get<VersionResponses, unknown, ThrowOnError>({ url: '/api/v1/getinfo', ...options });
+
+/**
+ * Get Session
+ *
+ * Heartbeat / status endpoint.
+ *
+ * If an Authorization header is present, it is validated. An invalid
+ * token returns 401. A missing token is fine (unauthenticated access).
+ */
+export const session = <ThrowOnError extends boolean = false>(options?: Options<SessionData, ThrowOnError>) => (options?.client ?? client).get<SessionResponses, unknown, ThrowOnError>({ url: '/api/v1/session', ...options });
+
+/**
+ * List Wallets
+ *
+ * List available wallet files.
+ */
+export const listwallets = <ThrowOnError extends boolean = false>(options?: Options<ListwalletsData, ThrowOnError>) => (options?.client ?? client).get<ListwalletsResponses, unknown, ThrowOnError>({ url: '/api/v1/wallet/all', ...options });
+
+/**
+ * Wallet Create
+ *
+ * Create a new wallet.
+ */
+export const createwallet = <ThrowOnError extends boolean = false>(options: Options<CreatewalletData, ThrowOnError>) => (options.client ?? client).post<CreatewalletResponses, CreatewalletErrors, ThrowOnError>({
+    url: '/api/v1/wallet/create',
     ...options,
     headers: {
         'Content-Type': 'application/json',
-        ...options?.headers
+        ...options.headers
     }
 });
 
 /**
- * create a new wallet
+ * Wallet Recover
  *
- * Give a filename (.jmdat must be included) and a password, create the wallet and get back the seedphrase for the newly persisted wallet file. The wallettype variable must be one of "sw" - segwit native, "sw-legacy" - segwit legacy or "sw-fb" - segwit native with fidelity bonds supported, the last of which is the default. Note that this operation cannot be performed when a wallet is already loaded (unlocked).
+ * Recover a wallet from a seed phrase.
  */
-export const createwallet = <ThrowOnError extends boolean = false>(options?: Options<CreatewalletData, ThrowOnError>) => (options?.client ?? client).post<CreatewalletResponses, CreatewalletErrors, ThrowOnError>({
-    url: '/wallet/create',
+export const recoverwallet = <ThrowOnError extends boolean = false>(options: Options<RecoverwalletData, ThrowOnError>) => (options.client ?? client).post<RecoverwalletResponses, RecoverwalletErrors, ThrowOnError>({
+    url: '/api/v1/wallet/recover',
     ...options,
     headers: {
         'Content-Type': 'application/json',
-        ...options?.headers
+        ...options.headers
     }
 });
 
 /**
- * recover a wallet from a seedphrase
+ * Wallet Unlock
  *
- * Give a filename (.jmdat must be included), a wallettype, a seedphrase and a password, create the wallet for the newly persisted wallet file. The wallettype variable must be one of "sw" - segwit native, "sw-legacy" - segwit legacy or "sw-fb" - segwit native with fidelity bonds supported, the last of which is the default. The seedphrase must be a single string with words space-separated, and must conform to BIP39 (else 400 is returned). Note that this operation cannot be performed when a wallet is already loaded (unlocked).
- */
-export const recoverwallet = <ThrowOnError extends boolean = false>(options?: Options<RecoverwalletData, ThrowOnError>) => (options?.client ?? client).post<RecoverwalletResponses, RecoverwalletErrors, ThrowOnError>({
-    url: '/wallet/recover',
-    ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options?.headers
-    }
-});
-
-/**
- * decrypt an existing wallet
- *
- * Give the password for the specified (existing) wallet file, and it will be decrypted ready for use. Note that this operation cannot be performed when another wallet is already loaded (unlocked).
+ * Unlock (decrypt) a wallet.
  */
 export const unlockwallet = <ThrowOnError extends boolean = false>(options: Options<UnlockwalletData, ThrowOnError>) => (options.client ?? client).post<UnlockwalletResponses, UnlockwalletErrors, ThrowOnError>({
-    url: '/wallet/{walletname}/unlock',
+    url: '/api/v1/wallet/{walletname}/unlock',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -77,123 +85,19 @@ export const unlockwallet = <ThrowOnError extends boolean = false>(options: Opti
 });
 
 /**
- * block access to a currently decrypted wallet
+ * Wallet Lock
  *
- * After this (authenticated) action, the wallet will not be readable or writeable.
+ * Lock the current wallet and stop all services.
  */
-export const lockwallet = <ThrowOnError extends boolean = false>(options: Options<LockwalletData, ThrowOnError>) => (options.client ?? client).get<LockwalletResponses, LockwalletErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/wallet/{walletname}/lock',
-    ...options
-});
+export const lockwallet = <ThrowOnError extends boolean = false>(options: Options<LockwalletData, ThrowOnError>) => (options.client ?? client).get<LockwalletResponses, LockwalletErrors, ThrowOnError>({ url: '/api/v1/wallet/{walletname}/lock', ...options });
 
 /**
- * get detailed breakdown of wallet contents by account.
+ * Token Refresh
  *
- * get detailed breakdown of wallet contents by account.
+ * Refresh the access/refresh token pair.
  */
-export const displaywallet = <ThrowOnError extends boolean = false>(options: Options<DisplaywalletData, ThrowOnError>) => (options.client ?? client).get<DisplaywalletResponses, DisplaywalletErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/wallet/{walletname}/display',
-    ...options
-});
-
-/**
- * get current status of backend
- *
- * get whether a wallet is loaded and whether coinjoin/maker are happening. if an auth token is provided, which is optional, it will be validated.
- */
-export const session = <ThrowOnError extends boolean = false>(options?: Options<SessionData, ThrowOnError>) => (options?.client ?? client).get<SessionResponses, SessionErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/session',
-    ...options
-});
-
-/**
- * get info on backend
- *
- * get information about backend, including the version of Joinmarket running.
- */
-export const version = <ThrowOnError extends boolean = false>(options?: Options<VersionData, ThrowOnError>) => (options?.client ?? client).get<VersionResponses, unknown, ThrowOnError>({ url: '/getinfo', ...options });
-
-/**
- * get current available wallets
- *
- * get all wallet filenames in standard location as a list
- */
-export const listwallets = <ThrowOnError extends boolean = false>(options?: Options<ListwalletsData, ThrowOnError>) => (options?.client ?? client).get<ListwalletsResponses, ListwalletsErrors, ThrowOnError>({ url: '/wallet/all', ...options });
-
-/**
- * get latest report on yield generating activity
- *
- * Get list of coinjoins taken part in as maker (across all wallets). Data returned as list of strings, each one in the same comma separated format as found in yigen-statement.csv. Note that this returns all lines in the file, including the lines that are only present to represent the starting of a bot. Those lines contain the word Connected and can be thus discarded. The header line is also delivered and so can be ignored as per the client requirements.
- *
- */
-export const yieldgenreport = <ThrowOnError extends boolean = false>(options?: Options<YieldgenreportData, ThrowOnError>) => (options?.client ?? client).get<YieldgenreportResponses, YieldgenreportErrors, ThrowOnError>({ url: '/wallet/yieldgen/report', ...options });
-
-/**
- * get a fresh address in the given account for depositing funds.
- *
- * get a fresh address in the given account for depositing funds.
- */
-export const getaddress = <ThrowOnError extends boolean = false>(options: Options<GetaddressData, ThrowOnError>) => (options.client ?? client).get<GetaddressResponses, GetaddressErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/wallet/{walletname}/address/new/{mixdepth}',
-    ...options
-});
-
-/**
- * Rescan the blockchain from a given blockheight
- *
- * Use this operation on recovered wallets to re-sync the wallet
- */
-export const rescanblockchain = <ThrowOnError extends boolean = false>(options: Options<RescanblockchainData, ThrowOnError>) => (options.client ?? client).get<RescanblockchainResponses, RescanblockchainErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/wallet/{walletname}/rescanblockchain/{blockheight}',
-    ...options
-});
-
-/**
- * get the current rescan status
- *
- * get the current rescan status
- */
-export const getrescaninfo = <ThrowOnError extends boolean = false>(options: Options<GetrescaninfoData, ThrowOnError>) => (options.client ?? client).get<GetrescaninfoResponses, GetrescaninfoErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/wallet/{walletname}/getrescaninfo',
-    ...options
-});
-
-/**
- * get a fresh timelock address
- *
- * get a new timelocked address, for depositing funds, to create a fidelity bond, which will automatically be used when the maker is started. specify the date in YYYY-mm as the last path parameter. Note that mixdepth is not specified as timelock addresses are always in mixdepth(account) zero.
- */
-export const gettimelockaddress = <ThrowOnError extends boolean = false>(options: Options<GettimelockaddressData, ThrowOnError>) => (options.client ?? client).get<GettimelockaddressResponses, GettimelockaddressErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/wallet/{walletname}/address/timelock/new/{lockdate}',
-    ...options
-});
-
-/**
- * list details of all utxos currently in the wallet.
- *
- * list details of all utxos currently in the wallet.
- */
-export const listutxos = <ThrowOnError extends boolean = false>(options: Options<ListutxosData, ThrowOnError>) => (options.client ?? client).get<ListutxosResponses, ListutxosErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/wallet/{walletname}/utxos',
-    ...options
-});
-
-/**
- * create and broadcast a transaction (without coinjoin)
- *
- * create and broadcast a transaction (without coinjoin)
- */
-export const directsend = <ThrowOnError extends boolean = false>(options: Options<DirectsendData, ThrowOnError>) => (options.client ?? client).post<DirectsendResponses, DirectsendErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/wallet/{walletname}/taker/direct-send',
+export const token = <ThrowOnError extends boolean = false>(options: Options<TokenData, ThrowOnError>) => (options.client ?? client).post<TokenResponses, TokenErrors, ThrowOnError>({
+    url: '/api/v1/token',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -202,121 +106,60 @@ export const directsend = <ThrowOnError extends boolean = false>(options: Option
 });
 
 /**
- * Start the yield generator service.
+ * Wallet Display
  *
- * Start the yield generator service with the configuration settings specified in the POST request. Note that if fidelity bonds are enabled in the wallet, and a timelock address has been generated, and then funded, the fidelity bond will automatically be advertised without any specific configuration in this request. Note that if the wallet does not have confirmed coins, or another taker or maker coinjoin service is already running, the maker will not start.
+ * Return full wallet display with accounts, branches, and entries.
  */
-export const startmaker = <ThrowOnError extends boolean = false>(options: Options<StartmakerData, ThrowOnError>) => (options.client ?? client).post<StartmakerResponses, StartmakerErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/wallet/{walletname}/maker/start',
-    ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
-});
+export const displaywallet = <ThrowOnError extends boolean = false>(options: Options<DisplaywalletData, ThrowOnError>) => (options.client ?? client).get<DisplaywalletResponses, DisplaywalletErrors, ThrowOnError>({ url: '/api/v1/wallet/{walletname}/display', ...options });
 
 /**
- * stop the yield generator service
+ * List Utxos
  *
- * stop the yield generator service
+ * List all UTXOs in the wallet.
  */
-export const stopmaker = <ThrowOnError extends boolean = false>(options: Options<StopmakerData, ThrowOnError>) => (options.client ?? client).get<StopmakerResponses, StopmakerErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/wallet/{walletname}/maker/stop',
-    ...options
-});
+export const listutxos = <ThrowOnError extends boolean = false>(options: Options<ListutxosData, ThrowOnError>) => (options.client ?? client).get<ListutxosResponses, ListutxosErrors, ThrowOnError>({ url: '/api/v1/wallet/{walletname}/utxos', ...options });
 
 /**
- * initiate a coinjoin as taker
+ * Wallet History
  *
- * initiate a coinjoin as taker
+ * Return the active wallet's CoinJoin/spend history (from history.csv).
+ *
+ * Entries are scoped to the active wallet's master fingerprint and returned
+ * most-recent first. Pass ``?limit=N`` to cap the number of entries. This is
+ * the same data the ``jm-wallet history`` CLI reads; it is read-only.
  */
-export const docoinjoin = <ThrowOnError extends boolean = false>(options: Options<DocoinjoinData, ThrowOnError>) => (options.client ?? client).post<DocoinjoinResponses, DocoinjoinErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/wallet/{walletname}/taker/coinjoin',
-    ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
-});
+export const wallethistory = <ThrowOnError extends boolean = false>(options: Options<WallethistoryData, ThrowOnError>) => (options.client ?? client).get<WallethistoryResponses, WallethistoryErrors, ThrowOnError>({ url: '/api/v1/wallet/{walletname}/history', ...options });
 
 /**
- * get the schedule that is currently running
+ * Get New Address
  *
- * Get the current transaction schedule if one is running.
+ * Get a new receive address for the specified mixdepth.
  */
-export const getschedule = <ThrowOnError extends boolean = false>(options: Options<GetscheduleData, ThrowOnError>) => (options.client ?? client).get<GetscheduleResponses, GetscheduleErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/wallet/{walletname}/taker/schedule',
-    ...options
-});
+export const getaddress = <ThrowOnError extends boolean = false>(options: Options<GetaddressData, ThrowOnError>) => (options.client ?? client).get<GetaddressResponses, GetaddressErrors, ThrowOnError>({ url: '/api/v1/wallet/{walletname}/address/new/{mixdepth}', ...options });
 
 /**
- * create and run a schedule of transactions
+ * Get Timelock Address
  *
- * Creates and then starts a schedule of transactions.
+ * Get a new timelocked (fidelity bond) address.
+ *
+ * The lockdate should be in YYYY-mm format (e.g., "2025-06").
  */
-export const runschedule = <ThrowOnError extends boolean = false>(options: Options<RunscheduleData, ThrowOnError>) => (options.client ?? client).post<RunscheduleResponses, RunscheduleErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/wallet/{walletname}/taker/schedule',
-    ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
-});
+export const gettimelockaddress = <ThrowOnError extends boolean = false>(options: Options<GettimelockaddressData, ThrowOnError>) => (options.client ?? client).get<GettimelockaddressResponses, GettimelockaddressErrors, ThrowOnError>({ url: '/api/v1/wallet/{walletname}/address/timelock/new/{lockdate}', ...options });
 
 /**
- * stop a running coinjoin attempt
+ * Get Seed
  *
- * stop a running coinjoin attempt
+ * Return the wallet's BIP39 mnemonic seed phrase.
  */
-export const stopcoinjoin = <ThrowOnError extends boolean = false>(options: Options<StopcoinjoinData, ThrowOnError>) => (options.client ?? client).get<StopcoinjoinResponses, StopcoinjoinErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/wallet/{walletname}/taker/stop',
-    ...options
-});
+export const getseed = <ThrowOnError extends boolean = false>(options: Options<GetseedData, ThrowOnError>) => (options.client ?? client).get<GetseedResponses, GetseedErrors, ThrowOnError>({ url: '/api/v1/wallet/{walletname}/getseed', ...options });
 
 /**
- * change a config variable
+ * Freeze Utxo
  *
- * change a config variable (for the duration of this backend daemon process instance)
- */
-export const configsetting = <ThrowOnError extends boolean = false>(options: Options<ConfigsettingData, ThrowOnError>) => (options.client ?? client).post<ConfigsettingResponses, ConfigsettingErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/wallet/{walletname}/configset',
-    ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
-});
-
-/**
- * get the value of a specific config setting
- *
- * Get the value of a specific config setting. Note values are always returned as string.
- */
-export const configget = <ThrowOnError extends boolean = false>(options: Options<ConfiggetData, ThrowOnError>) => (options.client ?? client).post<ConfiggetResponses, ConfiggetErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/wallet/{walletname}/configget',
-    ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-    }
-});
-
-/**
- * freeze or unfreeze an individual utxo for spending
- *
- * freeze or unfreeze an individual utxo for spending
+ * Freeze or unfreeze a UTXO.
  */
 export const freeze = <ThrowOnError extends boolean = false>(options: Options<FreezeData, ThrowOnError>) => (options.client ?? client).post<FreezeResponses, FreezeErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/wallet/{walletname}/freeze',
+    url: '/api/v1/wallet/{walletname}/freeze',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -325,12 +168,232 @@ export const freeze = <ThrowOnError extends boolean = false>(options: Options<Fr
 });
 
 /**
- * get the mnemonic recovery phrase with the optional passphrase
+ * Config Get
  *
- * Get the mnemonic recovery phrase with the optional passphrase. Not the response is a sentence with few line breaks.
+ * Read a config variable (in-memory override takes priority).
  */
-export const getseed = <ThrowOnError extends boolean = false>(options: Options<GetseedData, ThrowOnError>) => (options.client ?? client).get<GetseedResponses, GetseedErrors, ThrowOnError>({
-    security: [{ scheme: 'bearer', type: 'http' }],
-    url: '/wallet/{walletname}/getseed',
-    ...options
+export const configget = <ThrowOnError extends boolean = false>(options: Options<ConfiggetData, ThrowOnError>) => (options.client ?? client).post<ConfiggetResponses, ConfiggetErrors, ThrowOnError>({
+    url: '/api/v1/wallet/{walletname}/configget',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
 });
+
+/**
+ * Config Set
+ *
+ * Set a config variable (in-memory only, not persisted).
+ */
+export const configsetting = <ThrowOnError extends boolean = false>(options: Options<ConfigsettingData, ThrowOnError>) => (options.client ?? client).post<ConfigsettingResponses, ConfigsettingErrors, ThrowOnError>({
+    url: '/api/v1/wallet/{walletname}/configset',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Rescan Blockchain
+ *
+ * Trigger a blockchain rescan from the given block height.
+ */
+export const rescanblockchain = <ThrowOnError extends boolean = false>(options: Options<RescanblockchainData, ThrowOnError>) => (options.client ?? client).get<RescanblockchainResponses, RescanblockchainErrors, ThrowOnError>({ url: '/api/v1/wallet/{walletname}/rescanblockchain/{blockheight}', ...options });
+
+/**
+ * Get Rescan Info
+ *
+ * Get rescan progress information.
+ */
+export const getrescaninfo = <ThrowOnError extends boolean = false>(options: Options<GetrescaninfoData, ThrowOnError>) => (options.client ?? client).get<GetrescaninfoResponses, GetrescaninfoErrors, ThrowOnError>({ url: '/api/v1/wallet/{walletname}/getrescaninfo', ...options });
+
+/**
+ * Sign Message
+ *
+ * Sign a message with a wallet key at the given HD path.
+ */
+export const signmessage = <ThrowOnError extends boolean = false>(options: Options<SignmessageData, ThrowOnError>) => (options.client ?? client).post<SignmessageResponses, SignmessageErrors, ThrowOnError>({
+    url: '/api/v1/wallet/{walletname}/signmessage',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Yieldgen Report
+ *
+ * Return the yield generator (maker earnings) report.
+ *
+ * The joinmarket-ng maker logs its activity to ``history.csv`` (its single
+ * source of truth) rather than the legacy ``yigen-statement.csv`` file, so the
+ * report is synthesized from the successful maker rows of ``history.csv`` in
+ * the reference comma-separated format the Earn report UI expects (a header
+ * row, a ``Connected`` marker row, then one row per CoinJoin).
+ */
+export const yieldgenreport = <ThrowOnError extends boolean = false>(options?: Options<YieldgenreportData, ThrowOnError>) => (options?.client ?? client).get<YieldgenreportResponses, unknown, ThrowOnError>({ url: '/api/v1/wallet/yieldgen/report', ...options });
+
+/**
+ * Direct Send
+ *
+ * Send bitcoin directly (without coinjoin).
+ */
+export const directsend = <ThrowOnError extends boolean = false>(options: Options<DirectsendData, ThrowOnError>) => (options.client ?? client).post<DirectsendResponses, DirectsendErrors, ThrowOnError>({
+    url: '/api/v1/wallet/{walletname}/taker/direct-send',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Do Coinjoin
+ *
+ * Initiate a coinjoin transaction (asynchronous).
+ */
+export const docoinjoin = <ThrowOnError extends boolean = false>(options: Options<DocoinjoinData, ThrowOnError>) => (options.client ?? client).post<DocoinjoinResponses, DocoinjoinErrors, ThrowOnError>({
+    url: '/api/v1/wallet/{walletname}/taker/coinjoin',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Stop Coinjoin
+ *
+ * Stop a running coinjoin/tumbler.
+ */
+export const stopcoinjoin = <ThrowOnError extends boolean = false>(options: Options<StopcoinjoinData, ThrowOnError>) => (options.client ?? client).get<StopcoinjoinResponses, StopcoinjoinErrors, ThrowOnError>({ url: '/api/v1/wallet/{walletname}/taker/stop', ...options });
+
+/**
+ * Start Maker
+ *
+ * Start the yield generator (maker) service.
+ */
+export const startmaker = <ThrowOnError extends boolean = false>(options: Options<StartmakerData, ThrowOnError>) => (options.client ?? client).post<StartmakerResponses, StartmakerErrors, ThrowOnError>({
+    url: '/api/v1/wallet/{walletname}/maker/start',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Stop Maker
+ *
+ * Stop the yield generator (maker) service.
+ */
+export const stopmaker = <ThrowOnError extends boolean = false>(options: Options<StopmakerData, ThrowOnError>) => (options.client ?? client).get<StopmakerResponses, StopmakerErrors, ThrowOnError>({ url: '/api/v1/wallet/{walletname}/maker/stop', ...options });
+
+/**
+ * Delete Plan Endpoint
+ *
+ * Remove a non-running plan from disk.
+ */
+export const tumblerplandelete = <ThrowOnError extends boolean = false>(options: Options<TumblerplandeleteData, ThrowOnError>) => (options.client ?? client).delete<TumblerplandeleteResponses, TumblerplandeleteErrors, ThrowOnError>({ url: '/api/v1/wallet/{walletname}/tumbler/plan', ...options });
+
+/**
+ * Create Plan
+ *
+ * Build and persist a fresh tumble plan for the active wallet.
+ *
+ * An already-running plan for the wallet is always protected: callers must
+ * ``POST /tumbler/stop`` first. A plan in any other state (pending,
+ * completed, failed, cancelled) is overwritten unconditionally -- passing
+ * ``force=true`` is only required for a pending plan, to make the
+ * destructive intent explicit.
+ */
+export const tumblerplan = <ThrowOnError extends boolean = false>(options: Options<TumblerplanData, ThrowOnError>) => (options.client ?? client).post<TumblerplanResponses, TumblerplanErrors, ThrowOnError>({
+    url: '/api/v1/wallet/{walletname}/tumbler/plan',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Get Status
+ *
+ * Return the live plan if the runner is active, otherwise the on-disk plan.
+ *
+ * When the on-disk plan is ``RUNNING`` but no runner is live, the response's
+ * ``stale`` flag is set so the UI can prompt the user to acknowledge the
+ * failure and delete the plan.
+ */
+export const tumblerstatus = <ThrowOnError extends boolean = false>(options: Options<TumblerstatusData, ThrowOnError>) => (options.client ?? client).get<TumblerstatusResponses, TumblerstatusErrors, ThrowOnError>({ url: '/api/v1/wallet/{walletname}/tumbler/status', ...options });
+
+/**
+ * Start Plan
+ *
+ * Load the pending plan and run it in the background.
+ */
+export const tumblerstart = <ThrowOnError extends boolean = false>(options: Options<TumblerstartData, ThrowOnError>) => (options.client ?? client).post<TumblerstartResponses, TumblerstartErrors, ThrowOnError>({ url: '/api/v1/wallet/{walletname}/tumbler/start', ...options });
+
+/**
+ * Stop Plan
+ *
+ * Cooperatively stop the running plan; transition it to ``CANCELLED``.
+ */
+export const tumblerstop = <ThrowOnError extends boolean = false>(options: Options<TumblerstopData, ThrowOnError>) => (options.client ?? client).post<TumblerstopResponses, TumblerstopErrors, ThrowOnError>({ url: '/api/v1/wallet/{walletname}/tumbler/stop', ...options });
+
+/**
+ * Get Orderbook
+ *
+ * Proxy orderbook data from the orderbook_watcher service.
+ */
+export const getOrderbookApiV1ObwatchOrderbookJsonGet = <ThrowOnError extends boolean = false>(options?: Options<GetOrderbookApiV1ObwatchOrderbookJsonGetData, ThrowOnError>) => (options?.client ?? client).get<GetOrderbookApiV1ObwatchOrderbookJsonGetResponses, unknown, ThrowOnError>({ url: '/api/v1/obwatch/orderbook.json', ...options });
+
+/**
+ * Refresh Orderbook Get
+ *
+ * GET compatibility endpoint for orderbook refresh.
+ */
+export const refreshOrderbookGetApiV1ObwatchRefreshorderbookGet = <ThrowOnError extends boolean = false>(options?: Options<RefreshOrderbookGetApiV1ObwatchRefreshorderbookGetData, ThrowOnError>) => (options?.client ?? client).get<RefreshOrderbookGetApiV1ObwatchRefreshorderbookGetResponses, unknown, ThrowOnError>({ url: '/api/v1/obwatch/refreshorderbook', ...options });
+
+/**
+ * Refresh Orderbook Post
+ *
+ * POST compatibility endpoint for JAM frontend refresh calls.
+ */
+export const refreshOrderbookPostApiV1ObwatchRefreshorderbookPost = <ThrowOnError extends boolean = false>(options?: Options<RefreshOrderbookPostApiV1ObwatchRefreshorderbookPostData, ThrowOnError>) => (options?.client ?? client).post<RefreshOrderbookPostApiV1ObwatchRefreshorderbookPostResponses, unknown, ThrowOnError>({ url: '/api/v1/obwatch/refreshorderbook', ...options });
+
+/**
+ * Get Logs
+ *
+ * Return the recent in-memory log buffer as plain text.
+ */
+export const getlogs = <ThrowOnError extends boolean = false>(options?: Options<GetlogsData, ThrowOnError>) => (options?.client ?? client).get<GetlogsResponses, unknown, ThrowOnError>({ url: '/api/v1/logs', ...options });
+
+/**
+ * Get Orderbook
+ *
+ * Proxy orderbook data from the orderbook_watcher service.
+ */
+export const getOrderbookObwatchOrderbookJsonGet = <ThrowOnError extends boolean = false>(options?: Options<GetOrderbookObwatchOrderbookJsonGetData, ThrowOnError>) => (options?.client ?? client).get<GetOrderbookObwatchOrderbookJsonGetResponses, unknown, ThrowOnError>({ url: '/obwatch/orderbook.json', ...options });
+
+/**
+ * Refresh Orderbook Get
+ *
+ * GET compatibility endpoint for orderbook refresh.
+ */
+export const refreshOrderbookGetObwatchRefreshorderbookGet = <ThrowOnError extends boolean = false>(options?: Options<RefreshOrderbookGetObwatchRefreshorderbookGetData, ThrowOnError>) => (options?.client ?? client).get<RefreshOrderbookGetObwatchRefreshorderbookGetResponses, unknown, ThrowOnError>({ url: '/obwatch/refreshorderbook', ...options });
+
+/**
+ * Refresh Orderbook Post
+ *
+ * POST compatibility endpoint for JAM frontend refresh calls.
+ */
+export const refreshOrderbookPostObwatchRefreshorderbookPost = <ThrowOnError extends boolean = false>(options?: Options<RefreshOrderbookPostObwatchRefreshorderbookPostData, ThrowOnError>) => (options?.client ?? client).post<RefreshOrderbookPostObwatchRefreshorderbookPostResponses, unknown, ThrowOnError>({ url: '/obwatch/refreshorderbook', ...options });
+
+/**
+ * Cors Preflight
+ */
+export const corsPreflightOptions = <ThrowOnError extends boolean = false>(options?: Options<CorsPreflightOptionsData, ThrowOnError>) => (options?.client ?? client).options<CorsPreflightOptionsResponses, unknown, ThrowOnError>({ url: '/', ...options });

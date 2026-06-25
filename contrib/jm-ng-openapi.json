@@ -1,0 +1,2947 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "JoinMarket wallet daemon",
+    "description": "JAM-compatible HTTP/WebSocket API for JoinMarket-NG",
+    "version": "0.17.0"
+  },
+  "paths": {
+    "/api/v1/getinfo": {
+      "get": {
+        "summary": "Get Info",
+        "description": "Return backend version information.",
+        "operationId": "version",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetInfoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/session": {
+      "get": {
+        "summary": "Get Session",
+        "description": "Heartbeat / status endpoint.\n\nIf an Authorization header is present, it is validated. An invalid\ntoken returns 401. A missing token is fine (unauthenticated access).",
+        "operationId": "session",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/all": {
+      "get": {
+        "summary": "List Wallets",
+        "description": "List available wallet files.",
+        "operationId": "listwallets",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListWalletsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/create": {
+      "post": {
+        "summary": "Wallet Create",
+        "description": "Create a new wallet.",
+        "operationId": "createwallet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWalletRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateWalletResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/recover": {
+      "post": {
+        "summary": "Wallet Recover",
+        "description": "Recover a wallet from a seed phrase.",
+        "operationId": "recoverwallet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecoverWalletRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateWalletResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/{walletname}/unlock": {
+      "post": {
+        "summary": "Wallet Unlock",
+        "description": "Unlock (decrypt) a wallet.",
+        "operationId": "unlockwallet",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnlockWalletRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnlockWalletResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/{walletname}/lock": {
+      "get": {
+        "summary": "Wallet Lock",
+        "description": "Lock the current wallet and stop all services.",
+        "operationId": "lockwallet",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LockWalletResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/token": {
+      "post": {
+        "summary": "Token Refresh",
+        "description": "Refresh the access/refresh token pair.",
+        "operationId": "token",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/{walletname}/display": {
+      "get": {
+        "summary": "Wallet Display",
+        "description": "Return full wallet display with accounts, branches, and entries.",
+        "operationId": "displaywallet",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WalletDisplayResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/{walletname}/utxos": {
+      "get": {
+        "summary": "List Utxos",
+        "description": "List all UTXOs in the wallet.",
+        "operationId": "listutxos",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListUtxosResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/{walletname}/history": {
+      "get": {
+        "summary": "Wallet History",
+        "description": "Return the active wallet's CoinJoin/spend history (from history.csv).\n\nEntries are scoped to the active wallet's master fingerprint and returned\nmost-recent first. Pass ``?limit=N`` to cap the number of entries. This is\nthe same data the ``jm-wallet history`` CLI reads; it is read-only.",
+        "operationId": "wallethistory",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WalletHistoryResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/{walletname}/address/new/{mixdepth}": {
+      "get": {
+        "summary": "Get New Address",
+        "description": "Get a new receive address for the specified mixdepth.",
+        "operationId": "getaddress",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          },
+          {
+            "name": "mixdepth",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Mixdepth"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAddressResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/{walletname}/address/timelock/new/{lockdate}": {
+      "get": {
+        "summary": "Get Timelock Address",
+        "description": "Get a new timelocked (fidelity bond) address.\n\nThe lockdate should be in YYYY-mm format (e.g., \"2025-06\").",
+        "operationId": "gettimelockaddress",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          },
+          {
+            "name": "lockdate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Lockdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAddressResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/{walletname}/getseed": {
+      "get": {
+        "summary": "Get Seed",
+        "description": "Return the wallet's BIP39 mnemonic seed phrase.",
+        "operationId": "getseed",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSeedResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/{walletname}/freeze": {
+      "post": {
+        "summary": "Freeze Utxo",
+        "description": "Freeze or unfreeze a UTXO.",
+        "operationId": "freeze",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FreezeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Freeze"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/{walletname}/configget": {
+      "post": {
+        "summary": "Config Get",
+        "description": "Read a config variable (in-memory override takes priority).",
+        "operationId": "configget",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfigGetRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigGetResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/{walletname}/configset": {
+      "post": {
+        "summary": "Config Set",
+        "description": "Set a config variable (in-memory only, not persisted).",
+        "operationId": "configsetting",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfigSetRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Configsetting"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/{walletname}/rescanblockchain/{blockheight}": {
+      "get": {
+        "summary": "Rescan Blockchain",
+        "description": "Trigger a blockchain rescan from the given block height.",
+        "operationId": "rescanblockchain",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          },
+          {
+            "name": "blockheight",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Blockheight"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RescanBlockchainResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/{walletname}/getrescaninfo": {
+      "get": {
+        "summary": "Get Rescan Info",
+        "description": "Get rescan progress information.",
+        "operationId": "getrescaninfo",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RescanInfoResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/{walletname}/signmessage": {
+      "post": {
+        "summary": "Sign Message",
+        "description": "Sign a message with a wallet key at the given HD path.",
+        "operationId": "signmessage",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignMessageRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignMessageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/yieldgen/report": {
+      "get": {
+        "summary": "Yieldgen Report",
+        "description": "Return the yield generator (maker earnings) report.\n\nThe joinmarket-ng maker logs its activity to ``history.csv`` (its single\nsource of truth) rather than the legacy ``yigen-statement.csv`` file, so the\nreport is synthesized from the successful maker rows of ``history.csv`` in\nthe reference comma-separated format the Earn report UI expects (a header\nrow, a ``Connected`` marker row, then one row per CoinJoin).",
+        "operationId": "yieldgenreport",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/YieldGenReportResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/{walletname}/taker/direct-send": {
+      "post": {
+        "summary": "Direct Send",
+        "description": "Send bitcoin directly (without coinjoin).",
+        "operationId": "directsend",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DirectSendRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DirectSendResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/{walletname}/taker/coinjoin": {
+      "post": {
+        "summary": "Do Coinjoin",
+        "description": "Initiate a coinjoin transaction (asynchronous).",
+        "operationId": "docoinjoin",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DoCoinjoinRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/{walletname}/taker/stop": {
+      "get": {
+        "summary": "Stop Coinjoin",
+        "description": "Stop a running coinjoin/tumbler.",
+        "operationId": "stopcoinjoin",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/{walletname}/maker/start": {
+      "post": {
+        "summary": "Start Maker",
+        "description": "Start the yield generator (maker) service.",
+        "operationId": "startmaker",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartMakerRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/{walletname}/maker/stop": {
+      "get": {
+        "summary": "Stop Maker",
+        "description": "Stop the yield generator (maker) service.",
+        "operationId": "stopmaker",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/{walletname}/tumbler/plan": {
+      "post": {
+        "summary": "Create Plan",
+        "description": "Build and persist a fresh tumble plan for the active wallet.\n\nAn already-running plan for the wallet is always protected: callers must\n``POST /tumbler/stop`` first. A plan in any other state (pending,\ncompleted, failed, cancelled) is overwritten unconditionally -- passing\n``force=true`` is only required for a pending plan, to make the\ndestructive intent explicit.",
+        "operationId": "tumblerplan",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TumblerPlanRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TumblerPlanResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Plan Endpoint",
+        "description": "Remove a non-running plan from disk.",
+        "operationId": "tumblerplandelete",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/{walletname}/tumbler/status": {
+      "get": {
+        "summary": "Get Status",
+        "description": "Return the live plan if the runner is active, otherwise the on-disk plan.\n\nWhen the on-disk plan is ``RUNNING`` but no runner is live, the response's\n``stale`` flag is set so the UI can prompt the user to acknowledge the\nfailure and delete the plan.",
+        "operationId": "tumblerstatus",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TumblerPlanResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/{walletname}/tumbler/start": {
+      "post": {
+        "summary": "Start Plan",
+        "description": "Load the pending plan and run it in the background.",
+        "operationId": "tumblerstart",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/wallet/{walletname}/tumbler/stop": {
+      "post": {
+        "summary": "Stop Plan",
+        "description": "Cooperatively stop the running plan; transition it to ``CANCELLED``.",
+        "operationId": "tumblerstop",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/obwatch/orderbook.json": {
+      "get": {
+        "summary": "Get Orderbook",
+        "description": "Proxy orderbook data from the orderbook_watcher service.",
+        "operationId": "get_orderbook_api_v1_obwatch_orderbook_json_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/obwatch/refreshorderbook": {
+      "get": {
+        "summary": "Refresh Orderbook Get",
+        "description": "GET compatibility endpoint for orderbook refresh.",
+        "operationId": "refresh_orderbook_get_api_v1_obwatch_refreshorderbook_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Refresh Orderbook Post",
+        "description": "POST compatibility endpoint for JAM frontend refresh calls.",
+        "operationId": "refresh_orderbook_post_api_v1_obwatch_refreshorderbook_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/logs": {
+      "get": {
+        "summary": "Get Logs",
+        "description": "Return the recent in-memory log buffer as plain text.",
+        "operationId": "getlogs",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/obwatch/orderbook.json": {
+      "get": {
+        "summary": "Get Orderbook",
+        "description": "Proxy orderbook data from the orderbook_watcher service.",
+        "operationId": "get_orderbook_obwatch_orderbook_json_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/obwatch/refreshorderbook": {
+      "get": {
+        "summary": "Refresh Orderbook Get",
+        "description": "GET compatibility endpoint for orderbook refresh.",
+        "operationId": "refresh_orderbook_get_obwatch_refreshorderbook_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Refresh Orderbook Post",
+        "description": "POST compatibility endpoint for JAM frontend refresh calls.",
+        "operationId": "refresh_orderbook_post_obwatch_refreshorderbook_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "options": {
+        "summary": "Cors Preflight",
+        "operationId": "cors_preflight__options",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ConfigGetRequest": {
+        "properties": {
+          "section": {
+            "type": "string",
+            "title": "Section"
+          },
+          "field": {
+            "type": "string",
+            "title": "Field"
+          }
+        },
+        "type": "object",
+        "required": [
+          "section",
+          "field"
+        ],
+        "title": "ConfigGetRequest",
+        "description": "POST /api/v1/wallet/{walletname}/configget request."
+      },
+      "ConfigGetResponse": {
+        "properties": {
+          "configvalue": {
+            "type": "string",
+            "title": "Configvalue"
+          }
+        },
+        "type": "object",
+        "required": [
+          "configvalue"
+        ],
+        "title": "ConfigGetResponse",
+        "description": "Response for configget."
+      },
+      "ConfigSetRequest": {
+        "properties": {
+          "section": {
+            "type": "string",
+            "title": "Section"
+          },
+          "field": {
+            "type": "string",
+            "title": "Field"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "section",
+          "field",
+          "value"
+        ],
+        "title": "ConfigSetRequest",
+        "description": "POST /api/v1/wallet/{walletname}/configset request."
+      },
+      "CreateWalletRequest": {
+        "properties": {
+          "walletname": {
+            "type": "string",
+            "title": "Walletname"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
+          "wallettype": {
+            "type": "string",
+            "title": "Wallettype",
+            "default": "sw-fb"
+          }
+        },
+        "type": "object",
+        "required": [
+          "walletname",
+          "password"
+        ],
+        "title": "CreateWalletRequest",
+        "description": "POST /api/v1/wallet/create request."
+      },
+      "CreateWalletResponse": {
+        "properties": {
+          "walletname": {
+            "type": "string",
+            "title": "Walletname"
+          },
+          "seedphrase": {
+            "type": "string",
+            "title": "Seedphrase"
+          },
+          "token": {
+            "type": "string",
+            "title": "Token"
+          },
+          "token_type": {
+            "type": "string",
+            "title": "Token Type",
+            "default": "bearer"
+          },
+          "expires_in": {
+            "type": "integer",
+            "title": "Expires In",
+            "default": 1800
+          },
+          "scope": {
+            "type": "string",
+            "title": "Scope",
+            "default": ""
+          },
+          "refresh_token": {
+            "type": "string",
+            "title": "Refresh Token"
+          }
+        },
+        "type": "object",
+        "required": [
+          "walletname",
+          "seedphrase",
+          "token",
+          "refresh_token"
+        ],
+        "title": "CreateWalletResponse",
+        "description": "Response for wallet create and recover."
+      },
+      "DirectSendRequest": {
+        "properties": {
+          "mixdepth": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Mixdepth"
+          },
+          "amount_sats": {
+            "type": "integer",
+            "maximum": 2100000000000000,
+            "minimum": 0,
+            "title": "Amount Sats"
+          },
+          "destination": {
+            "type": "string",
+            "title": "Destination"
+          },
+          "txfee": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Txfee"
+          }
+        },
+        "type": "object",
+        "required": [
+          "mixdepth",
+          "amount_sats",
+          "destination"
+        ],
+        "title": "DirectSendRequest",
+        "description": "POST /api/v1/wallet/{walletname}/taker/direct-send request.\n\n``amount_sats`` is the amount to send in satoshis; ``0`` means sweep the\nentire mixdepth. ``mixdepth`` is the source account index."
+      },
+      "DirectSendResponse": {
+        "properties": {
+          "txinfo": {
+            "$ref": "#/components/schemas/TxInfo"
+          }
+        },
+        "type": "object",
+        "required": [
+          "txinfo"
+        ],
+        "title": "DirectSendResponse",
+        "description": "Response for direct-send."
+      },
+      "DoCoinjoinRequest": {
+        "properties": {
+          "mixdepth": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Mixdepth"
+          },
+          "amount_sats": {
+            "type": "integer",
+            "maximum": 2100000000000000,
+            "minimum": 0,
+            "title": "Amount Sats"
+          },
+          "counterparties": {
+            "type": "integer",
+            "maximum": 20,
+            "minimum": 2,
+            "title": "Counterparties"
+          },
+          "destination": {
+            "type": "string",
+            "title": "Destination"
+          },
+          "txfee": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Txfee"
+          }
+        },
+        "type": "object",
+        "required": [
+          "mixdepth",
+          "amount_sats",
+          "counterparties",
+          "destination"
+        ],
+        "title": "DoCoinjoinRequest",
+        "description": "POST /api/v1/wallet/{walletname}/taker/coinjoin request.\n\n``counterparties`` is the number of makers requested in the coinjoin;\nthe lower bound of 2 matches the minimum the taker protocol can run with,\nand the upper bound prevents a malformed request from triggering large\nallocations / long-running RPC under the auth boundary."
+      },
+      "FreezeRequest": {
+        "properties": {
+          "utxo-string": {
+            "type": "string",
+            "title": "Utxo-String"
+          },
+          "freeze": {
+            "type": "boolean",
+            "title": "Freeze"
+          }
+        },
+        "type": "object",
+        "required": [
+          "utxo-string",
+          "freeze"
+        ],
+        "title": "FreezeRequest",
+        "description": "POST /api/v1/wallet/{walletname}/freeze request.\n\nNote: the field name uses a hyphen in the reference API JSON.\nWe use Field(alias=...) to handle this."
+      },
+      "GetAddressResponse": {
+        "properties": {
+          "address": {
+            "type": "string",
+            "title": "Address"
+          }
+        },
+        "type": "object",
+        "required": [
+          "address"
+        ],
+        "title": "GetAddressResponse",
+        "description": "Response for new address / timelock address requests."
+      },
+      "GetInfoResponse": {
+        "properties": {
+          "version": {
+            "type": "string",
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "version"
+        ],
+        "title": "GetInfoResponse",
+        "description": "Response for GET /api/v1/getinfo."
+      },
+      "GetSeedResponse": {
+        "properties": {
+          "seedphrase": {
+            "type": "string",
+            "title": "Seedphrase"
+          }
+        },
+        "type": "object",
+        "required": [
+          "seedphrase"
+        ],
+        "title": "GetSeedResponse",
+        "description": "Response for GET /api/v1/wallet/{walletname}/getseed."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HistoryEntry": {
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "title": "Timestamp"
+          },
+          "completed_at": {
+            "type": "string",
+            "title": "Completed At",
+            "default": ""
+          },
+          "confirmed_at": {
+            "type": "string",
+            "title": "Confirmed At",
+            "default": ""
+          },
+          "role": {
+            "type": "string",
+            "title": "Role",
+            "default": "taker"
+          },
+          "success": {
+            "type": "boolean",
+            "title": "Success",
+            "default": true
+          },
+          "failure_reason": {
+            "type": "string",
+            "title": "Failure Reason",
+            "default": ""
+          },
+          "confirmations": {
+            "type": "integer",
+            "title": "Confirmations",
+            "default": 0
+          },
+          "txid": {
+            "type": "string",
+            "title": "Txid",
+            "default": ""
+          },
+          "cj_amount": {
+            "type": "integer",
+            "title": "Cj Amount",
+            "default": 0
+          },
+          "peer_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Peer Count"
+          },
+          "counterparty_nicks": {
+            "type": "string",
+            "title": "Counterparty Nicks",
+            "default": ""
+          },
+          "fee_received": {
+            "type": "integer",
+            "title": "Fee Received",
+            "default": 0
+          },
+          "txfee_contribution": {
+            "type": "integer",
+            "title": "Txfee Contribution",
+            "default": 0
+          },
+          "total_maker_fees_paid": {
+            "type": "integer",
+            "title": "Total Maker Fees Paid",
+            "default": 0
+          },
+          "mining_fee_paid": {
+            "type": "integer",
+            "title": "Mining Fee Paid",
+            "default": 0
+          },
+          "net_fee": {
+            "type": "integer",
+            "title": "Net Fee",
+            "default": 0
+          },
+          "source_mixdepth": {
+            "type": "integer",
+            "title": "Source Mixdepth",
+            "default": 0
+          },
+          "destination_address": {
+            "type": "string",
+            "title": "Destination Address",
+            "default": ""
+          },
+          "change_address": {
+            "type": "string",
+            "title": "Change Address",
+            "default": ""
+          },
+          "utxos_used": {
+            "type": "string",
+            "title": "Utxos Used",
+            "default": ""
+          },
+          "broadcast_method": {
+            "type": "string",
+            "title": "Broadcast Method",
+            "default": ""
+          },
+          "network": {
+            "type": "string",
+            "title": "Network",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "timestamp"
+        ],
+        "title": "HistoryEntry",
+        "description": "A single CoinJoin/spend record from the wallet history (history.csv).\n\nMirrors ``jmwallet.history.TransactionHistoryEntry``; surfaced read-only so\nfrontends can display past activity (maker earnings, taker spends, sends)."
+      },
+      "ListUtxosResponse": {
+        "properties": {
+          "utxos": {
+            "items": {
+              "$ref": "#/components/schemas/UTXOEntry"
+            },
+            "type": "array",
+            "title": "Utxos"
+          }
+        },
+        "type": "object",
+        "title": "ListUtxosResponse",
+        "description": "Response for GET /api/v1/wallet/{walletname}/utxos."
+      },
+      "ListWalletsResponse": {
+        "properties": {
+          "wallets": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Wallets"
+          }
+        },
+        "type": "object",
+        "title": "ListWalletsResponse",
+        "description": "Response for GET /api/v1/wallet/all."
+      },
+      "LockWalletResponse": {
+        "properties": {
+          "walletname": {
+            "type": "string",
+            "title": "Walletname"
+          },
+          "already_locked": {
+            "type": "boolean",
+            "title": "Already Locked"
+          }
+        },
+        "type": "object",
+        "required": [
+          "walletname",
+          "already_locked"
+        ],
+        "title": "LockWalletResponse",
+        "description": "Response for wallet lock."
+      },
+      "RecoverWalletRequest": {
+        "properties": {
+          "walletname": {
+            "type": "string",
+            "title": "Walletname"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
+          "wallettype": {
+            "type": "string",
+            "title": "Wallettype",
+            "default": "sw-fb"
+          },
+          "seedphrase": {
+            "type": "string",
+            "title": "Seedphrase"
+          }
+        },
+        "type": "object",
+        "required": [
+          "walletname",
+          "password",
+          "seedphrase"
+        ],
+        "title": "RecoverWalletRequest",
+        "description": "POST /api/v1/wallet/recover request."
+      },
+      "RescanBlockchainResponse": {
+        "properties": {
+          "walletname": {
+            "type": "string",
+            "title": "Walletname"
+          }
+        },
+        "type": "object",
+        "required": [
+          "walletname"
+        ],
+        "title": "RescanBlockchainResponse",
+        "description": "Response for rescanblockchain."
+      },
+      "RescanInfoResponse": {
+        "properties": {
+          "rescanning": {
+            "type": "boolean",
+            "title": "Rescanning"
+          },
+          "progress": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Progress"
+          }
+        },
+        "type": "object",
+        "required": [
+          "rescanning"
+        ],
+        "title": "RescanInfoResponse",
+        "description": "Response for getrescaninfo."
+      },
+      "SessionResponse": {
+        "properties": {
+          "session": {
+            "type": "boolean",
+            "title": "Session"
+          },
+          "maker_running": {
+            "type": "boolean",
+            "title": "Maker Running"
+          },
+          "coinjoin_in_process": {
+            "type": "boolean",
+            "title": "Coinjoin In Process"
+          },
+          "schedule": {
+            "anyOf": [
+              {
+                "items": {
+                  "items": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ]
+                  },
+                  "type": "array"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Schedule"
+          },
+          "wallet_name": {
+            "type": "string",
+            "title": "Wallet Name",
+            "default": ""
+          },
+          "offer_list": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ]
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Offer List"
+          },
+          "nickname": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nickname"
+          },
+          "rescanning": {
+            "type": "boolean",
+            "title": "Rescanning",
+            "default": false
+          },
+          "block_height": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Block Height"
+          },
+          "descriptor_wallet_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Descriptor Wallet Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "session",
+          "maker_running",
+          "coinjoin_in_process"
+        ],
+        "title": "SessionResponse",
+        "description": "Response for GET /api/v1/session."
+      },
+      "SignMessageRequest": {
+        "properties": {
+          "hd_path": {
+            "type": "string",
+            "title": "Hd Path"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "hd_path",
+          "message"
+        ],
+        "title": "SignMessageRequest",
+        "description": "POST /api/v1/wallet/{walletname}/signmessage request."
+      },
+      "SignMessageResponse": {
+        "properties": {
+          "signature": {
+            "type": "string",
+            "title": "Signature"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "address": {
+            "type": "string",
+            "title": "Address"
+          }
+        },
+        "type": "object",
+        "required": [
+          "signature",
+          "message",
+          "address"
+        ],
+        "title": "SignMessageResponse",
+        "description": "Response for signmessage."
+      },
+      "StartMakerRequest": {
+        "properties": {
+          "txfee": {
+            "type": "string",
+            "title": "Txfee"
+          },
+          "cjfee_a": {
+            "type": "string",
+            "title": "Cjfee A"
+          },
+          "cjfee_r": {
+            "type": "string",
+            "title": "Cjfee R"
+          },
+          "ordertype": {
+            "type": "string",
+            "title": "Ordertype"
+          },
+          "minsize": {
+            "type": "string",
+            "title": "Minsize"
+          }
+        },
+        "type": "object",
+        "required": [
+          "txfee",
+          "cjfee_a",
+          "cjfee_r",
+          "ordertype",
+          "minsize"
+        ],
+        "title": "StartMakerRequest",
+        "description": "POST /api/v1/wallet/{walletname}/maker/start request.\n\nAll fields are strings per the reference implementation."
+      },
+      "TokenRequest": {
+        "properties": {
+          "grant_type": {
+            "type": "string",
+            "title": "Grant Type"
+          },
+          "refresh_token": {
+            "type": "string",
+            "title": "Refresh Token"
+          }
+        },
+        "type": "object",
+        "required": [
+          "grant_type",
+          "refresh_token"
+        ],
+        "title": "TokenRequest",
+        "description": "POST /api/v1/token request."
+      },
+      "TokenResponse": {
+        "properties": {
+          "walletname": {
+            "type": "string",
+            "title": "Walletname",
+            "default": ""
+          },
+          "token": {
+            "type": "string",
+            "title": "Token"
+          },
+          "token_type": {
+            "type": "string",
+            "title": "Token Type",
+            "default": "bearer"
+          },
+          "expires_in": {
+            "type": "integer",
+            "title": "Expires In",
+            "default": 1800
+          },
+          "scope": {
+            "type": "string",
+            "title": "Scope",
+            "default": ""
+          },
+          "refresh_token": {
+            "type": "string",
+            "title": "Refresh Token"
+          }
+        },
+        "type": "object",
+        "required": [
+          "token",
+          "refresh_token"
+        ],
+        "title": "TokenResponse",
+        "description": "Token issuance response (used by create, unlock, recover, refresh)."
+      },
+      "TumblerPhaseResponse": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "index": {
+            "type": "integer",
+            "title": "Index"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "wait_seconds": {
+            "type": "number",
+            "title": "Wait Seconds"
+          },
+          "started_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Started At"
+          },
+          "finished_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finished At"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "mixdepth": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mixdepth"
+          },
+          "amount": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount"
+          },
+          "amount_fraction": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount Fraction"
+          },
+          "counterparty_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Counterparty Count"
+          },
+          "destination": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Destination"
+          },
+          "txid": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Txid"
+          },
+          "duration_seconds": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Seconds"
+          },
+          "target_cj_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Cj Count"
+          },
+          "idle_timeout_seconds": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Idle Timeout Seconds"
+          },
+          "cj_served": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cj Served"
+          },
+          "attempt_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Attempt Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind",
+          "index",
+          "status",
+          "wait_seconds"
+        ],
+        "title": "TumblerPhaseResponse",
+        "description": "A single phase rendered for the API. Keeps the discriminator flat."
+      },
+      "TumblerPlanRequest": {
+        "properties": {
+          "destinations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Destinations"
+          },
+          "parameters": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parameters"
+          },
+          "force": {
+            "type": "boolean",
+            "title": "Force",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "destinations"
+        ],
+        "title": "TumblerPlanRequest",
+        "description": "POST /api/v1/wallet/{walletname}/tumbler/plan request.\n\nDestinations are the external bitcoin addresses the tumble should\nultimately sweep funds to; order is significant (first destination\nmaps to the first non-empty landing mixdepth). ``parameters`` lets\nthe caller override the builder defaults; omit for sensible knobs.\n``force`` overrides a pending-only plan on disk; plans that are\n``RUNNING`` in the daemon are always protected (stop first)."
+      },
+      "TumblerPlanResponse": {
+        "properties": {
+          "plan_id": {
+            "type": "string",
+            "title": "Plan Id"
+          },
+          "wallet_name": {
+            "type": "string",
+            "title": "Wallet Name"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "destinations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Destinations"
+          },
+          "current_phase": {
+            "type": "integer",
+            "title": "Current Phase"
+          },
+          "phases": {
+            "items": {
+              "$ref": "#/components/schemas/TumblerPhaseResponse"
+            },
+            "type": "array",
+            "title": "Phases"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "title": "Updated At"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "stale": {
+            "type": "boolean",
+            "title": "Stale",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "plan_id",
+          "wallet_name",
+          "status",
+          "destinations",
+          "current_phase",
+          "phases",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "TumblerPlanResponse",
+        "description": "Response body returned by tumbler plan / status endpoints."
+      },
+      "TxInfo": {
+        "properties": {
+          "hex": {
+            "type": "string",
+            "title": "Hex"
+          },
+          "inputs": {
+            "items": {
+              "$ref": "#/components/schemas/TxInput"
+            },
+            "type": "array",
+            "title": "Inputs"
+          },
+          "outputs": {
+            "items": {
+              "$ref": "#/components/schemas/TxOutput"
+            },
+            "type": "array",
+            "title": "Outputs"
+          },
+          "txid": {
+            "type": "string",
+            "title": "Txid"
+          },
+          "nLockTime": {
+            "type": "integer",
+            "title": "Nlocktime",
+            "default": 0
+          },
+          "nVersion": {
+            "type": "integer",
+            "title": "Nversion",
+            "default": 2
+          }
+        },
+        "type": "object",
+        "required": [
+          "hex",
+          "txid"
+        ],
+        "title": "TxInfo",
+        "description": "Full transaction information."
+      },
+      "TxInput": {
+        "properties": {
+          "outpoint": {
+            "type": "string",
+            "title": "Outpoint"
+          },
+          "scriptSig": {
+            "type": "string",
+            "title": "Scriptsig",
+            "default": ""
+          },
+          "nSequence": {
+            "type": "integer",
+            "title": "Nsequence",
+            "default": 4294967295
+          },
+          "witness": {
+            "type": "string",
+            "title": "Witness",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "outpoint"
+        ],
+        "title": "TxInput",
+        "description": "A transaction input."
+      },
+      "TxOutput": {
+        "properties": {
+          "value_sats": {
+            "type": "integer",
+            "title": "Value Sats"
+          },
+          "scriptPubKey": {
+            "type": "string",
+            "title": "Scriptpubkey"
+          },
+          "address": {
+            "type": "string",
+            "title": "Address"
+          }
+        },
+        "type": "object",
+        "required": [
+          "value_sats",
+          "scriptPubKey",
+          "address"
+        ],
+        "title": "TxOutput",
+        "description": "A transaction output."
+      },
+      "UTXOEntry": {
+        "properties": {
+          "utxo": {
+            "type": "string",
+            "title": "Utxo"
+          },
+          "address": {
+            "type": "string",
+            "title": "Address"
+          },
+          "path": {
+            "type": "string",
+            "title": "Path"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label",
+            "default": ""
+          },
+          "value": {
+            "type": "integer",
+            "title": "Value"
+          },
+          "tries": {
+            "type": "integer",
+            "title": "Tries",
+            "default": 0
+          },
+          "tries_remaining": {
+            "type": "integer",
+            "title": "Tries Remaining",
+            "default": 3
+          },
+          "external": {
+            "type": "boolean",
+            "title": "External",
+            "default": false
+          },
+          "mixdepth": {
+            "type": "integer",
+            "title": "Mixdepth"
+          },
+          "confirmations": {
+            "type": "integer",
+            "title": "Confirmations"
+          },
+          "frozen": {
+            "type": "boolean",
+            "title": "Frozen",
+            "default": false
+          },
+          "locktime": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locktime"
+          }
+        },
+        "type": "object",
+        "required": [
+          "utxo",
+          "address",
+          "path",
+          "value",
+          "mixdepth",
+          "confirmations"
+        ],
+        "title": "UTXOEntry",
+        "description": "A single UTXO in the listutxos response."
+      },
+      "UnlockWalletRequest": {
+        "properties": {
+          "password": {
+            "type": "string",
+            "title": "Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "password"
+        ],
+        "title": "UnlockWalletRequest",
+        "description": "POST /api/v1/wallet/{walletname}/unlock request."
+      },
+      "UnlockWalletResponse": {
+        "properties": {
+          "walletname": {
+            "type": "string",
+            "title": "Walletname"
+          },
+          "token": {
+            "type": "string",
+            "title": "Token"
+          },
+          "token_type": {
+            "type": "string",
+            "title": "Token Type",
+            "default": "bearer"
+          },
+          "expires_in": {
+            "type": "integer",
+            "title": "Expires In",
+            "default": 1800
+          },
+          "scope": {
+            "type": "string",
+            "title": "Scope",
+            "default": ""
+          },
+          "refresh_token": {
+            "type": "string",
+            "title": "Refresh Token"
+          }
+        },
+        "type": "object",
+        "required": [
+          "walletname",
+          "token",
+          "refresh_token"
+        ],
+        "title": "UnlockWalletResponse",
+        "description": "Response for wallet unlock."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "WalletDisplayAccount": {
+        "properties": {
+          "account": {
+            "type": "string",
+            "title": "Account"
+          },
+          "account_balance": {
+            "type": "string",
+            "title": "Account Balance"
+          },
+          "available_balance": {
+            "type": "string",
+            "title": "Available Balance",
+            "default": "0.00000000"
+          },
+          "branches": {
+            "items": {
+              "$ref": "#/components/schemas/WalletDisplayBranch"
+            },
+            "type": "array",
+            "title": "Branches"
+          }
+        },
+        "type": "object",
+        "required": [
+          "account",
+          "account_balance"
+        ],
+        "title": "WalletDisplayAccount",
+        "description": "A single account (mixdepth) in the wallet display."
+      },
+      "WalletDisplayBranch": {
+        "properties": {
+          "branch": {
+            "type": "string",
+            "title": "Branch"
+          },
+          "balance": {
+            "type": "string",
+            "title": "Balance"
+          },
+          "available_balance": {
+            "type": "string",
+            "title": "Available Balance",
+            "default": "0.00000000"
+          },
+          "entries": {
+            "items": {
+              "$ref": "#/components/schemas/WalletDisplayEntry"
+            },
+            "type": "array",
+            "title": "Entries"
+          }
+        },
+        "type": "object",
+        "required": [
+          "branch",
+          "balance"
+        ],
+        "title": "WalletDisplayBranch",
+        "description": "A branch (external/internal/bond) within an account."
+      },
+      "WalletDisplayEntry": {
+        "properties": {
+          "hd_path": {
+            "type": "string",
+            "title": "Hd Path"
+          },
+          "address": {
+            "type": "string",
+            "title": "Address"
+          },
+          "amount": {
+            "type": "string",
+            "title": "Amount"
+          },
+          "available_balance": {
+            "type": "string",
+            "title": "Available Balance",
+            "default": "0.00000000"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": ""
+          },
+          "label": {
+            "type": "string",
+            "title": "Label",
+            "default": ""
+          },
+          "extradata": {
+            "type": "string",
+            "title": "Extradata",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "hd_path",
+          "address",
+          "amount"
+        ],
+        "title": "WalletDisplayEntry",
+        "description": "A single address entry in the wallet display."
+      },
+      "WalletDisplayResponse": {
+        "properties": {
+          "walletname": {
+            "type": "string",
+            "title": "Walletname"
+          },
+          "walletinfo": {
+            "$ref": "#/components/schemas/WalletInfo"
+          }
+        },
+        "type": "object",
+        "required": [
+          "walletname",
+          "walletinfo"
+        ],
+        "title": "WalletDisplayResponse",
+        "description": "Response for GET /api/v1/wallet/{walletname}/display."
+      },
+      "WalletHistoryResponse": {
+        "properties": {
+          "history": {
+            "items": {
+              "$ref": "#/components/schemas/HistoryEntry"
+            },
+            "type": "array",
+            "title": "History"
+          }
+        },
+        "type": "object",
+        "title": "WalletHistoryResponse",
+        "description": "Response for GET /api/v1/wallet/{walletname}/history.\n\n``history`` is ordered most-recent first."
+      },
+      "WalletInfo": {
+        "properties": {
+          "wallet_name": {
+            "type": "string",
+            "title": "Wallet Name",
+            "default": "JM wallet"
+          },
+          "total_balance": {
+            "type": "string",
+            "title": "Total Balance",
+            "default": "0.00000000"
+          },
+          "available_balance": {
+            "type": "string",
+            "title": "Available Balance",
+            "default": "0.00000000"
+          },
+          "accounts": {
+            "items": {
+              "$ref": "#/components/schemas/WalletDisplayAccount"
+            },
+            "type": "array",
+            "title": "Accounts"
+          }
+        },
+        "type": "object",
+        "title": "WalletInfo",
+        "description": "The walletinfo object within the display response."
+      },
+      "YieldGenReportResponse": {
+        "properties": {
+          "yigen_data": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Yigen Data"
+          }
+        },
+        "type": "object",
+        "title": "YieldGenReportResponse",
+        "description": "Response for yieldgen/report."
+      }
+    }
+  }
+}

@@ -3,85 +3,8 @@
 import { type DefaultError, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { configget, configsetting, createwallet, directsend, displaywallet, docoinjoin, freeze, getaddress, getrescaninfo, getschedule, getseed, gettimelockaddress, listutxos, listwallets, lockwallet, type Options, recoverwallet, rescanblockchain, runschedule, session, startmaker, stopcoinjoin, stopmaker, token, unlockwallet, version, yieldgenreport } from '../sdk.gen';
-import type { ConfiggetData, ConfiggetError, ConfiggetResponse, ConfigsettingData, ConfigsettingError, ConfigsettingResponse, CreatewalletData, CreatewalletError, CreatewalletResponse, DirectsendData, DirectsendError, DirectsendResponse, DisplaywalletData, DisplaywalletError, DisplaywalletResponse, DocoinjoinData, DocoinjoinError, FreezeData, FreezeError, FreezeResponse2, GetaddressData, GetaddressError, GetaddressResponse, GetrescaninfoData, GetrescaninfoError, GetrescaninfoResponse, GetscheduleData, GetscheduleError, GetscheduleResponse, GetseedData, GetseedError, GetseedResponse, GettimelockaddressData, GettimelockaddressError, GettimelockaddressResponse, ListutxosData, ListutxosError, ListutxosResponse, ListwalletsData, ListwalletsError, ListwalletsResponse, LockwalletData, LockwalletError, LockwalletResponse, RecoverwalletData, RecoverwalletError, RecoverwalletResponse, RescanblockchainData, RescanblockchainError, RescanblockchainResponse, RunscheduleData, RunscheduleError, RunscheduleResponse, SessionData, SessionError, SessionResponse2, StartmakerData, StartmakerError, StopcoinjoinData, StopcoinjoinError, StopmakerData, StopmakerError, TokenData, TokenError, TokenResponse2, UnlockwalletData, UnlockwalletError, UnlockwalletResponse, VersionData, VersionResponse, YieldgenreportData, YieldgenreportError, YieldgenreportResponse } from '../types.gen';
-
-/**
- * The token endpoint is used by the client to obtain an access token using a grant such as refresh token
- *
- * Give a refresh token and get back both an access and refresh token. On initially creating, unlocking or recovering a wallet, store both the refresh and access tokens, the latter is valid for only 30 minutes (must be used for any authenticated call) while the former is for 4 hours (can only be used in the refresh request parameters). Use /token endpoint on a regular basis to get new access and refresh tokens, ideally before access token expiration to avoid authentication errors and in any case, before refresh token expiration. The newly issued tokens must be used in subsequent calls since operation invalidates previously issued tokens.
- *
- */
-export const tokenMutation = (options?: Partial<Options<TokenData>>): UseMutationOptions<TokenResponse2, TokenError, Options<TokenData>> => {
-    const mutationOptions: UseMutationOptions<TokenResponse2, TokenError, Options<TokenData>> = {
-        mutationFn: async (fnOptions) => {
-            const { data } = await token({
-                ...options,
-                ...fnOptions,
-                throwOnError: true
-            });
-            return data;
-        }
-    };
-    return mutationOptions;
-};
-
-/**
- * create a new wallet
- *
- * Give a filename (.jmdat must be included) and a password, create the wallet and get back the seedphrase for the newly persisted wallet file. The wallettype variable must be one of "sw" - segwit native, "sw-legacy" - segwit legacy or "sw-fb" - segwit native with fidelity bonds supported, the last of which is the default. Note that this operation cannot be performed when a wallet is already loaded (unlocked).
- */
-export const createwalletMutation = (options?: Partial<Options<CreatewalletData>>): UseMutationOptions<CreatewalletResponse, CreatewalletError, Options<CreatewalletData>> => {
-    const mutationOptions: UseMutationOptions<CreatewalletResponse, CreatewalletError, Options<CreatewalletData>> = {
-        mutationFn: async (fnOptions) => {
-            const { data } = await createwallet({
-                ...options,
-                ...fnOptions,
-                throwOnError: true
-            });
-            return data;
-        }
-    };
-    return mutationOptions;
-};
-
-/**
- * recover a wallet from a seedphrase
- *
- * Give a filename (.jmdat must be included), a wallettype, a seedphrase and a password, create the wallet for the newly persisted wallet file. The wallettype variable must be one of "sw" - segwit native, "sw-legacy" - segwit legacy or "sw-fb" - segwit native with fidelity bonds supported, the last of which is the default. The seedphrase must be a single string with words space-separated, and must conform to BIP39 (else 400 is returned). Note that this operation cannot be performed when a wallet is already loaded (unlocked).
- */
-export const recoverwalletMutation = (options?: Partial<Options<RecoverwalletData>>): UseMutationOptions<RecoverwalletResponse, RecoverwalletError, Options<RecoverwalletData>> => {
-    const mutationOptions: UseMutationOptions<RecoverwalletResponse, RecoverwalletError, Options<RecoverwalletData>> = {
-        mutationFn: async (fnOptions) => {
-            const { data } = await recoverwallet({
-                ...options,
-                ...fnOptions,
-                throwOnError: true
-            });
-            return data;
-        }
-    };
-    return mutationOptions;
-};
-
-/**
- * decrypt an existing wallet
- *
- * Give the password for the specified (existing) wallet file, and it will be decrypted ready for use. Note that this operation cannot be performed when another wallet is already loaded (unlocked).
- */
-export const unlockwalletMutation = (options?: Partial<Options<UnlockwalletData>>): UseMutationOptions<UnlockwalletResponse, UnlockwalletError, Options<UnlockwalletData>> => {
-    const mutationOptions: UseMutationOptions<UnlockwalletResponse, UnlockwalletError, Options<UnlockwalletData>> = {
-        mutationFn: async (fnOptions) => {
-            const { data } = await unlockwallet({
-                ...options,
-                ...fnOptions,
-                throwOnError: true
-            });
-            return data;
-        }
-    };
-    return mutationOptions;
-};
+import { configget, configsetting, createwallet, directsend, displaywallet, docoinjoin, freeze, getaddress, getlogs, getOrderbookApiV1ObwatchOrderbookJsonGet, getOrderbookObwatchOrderbookJsonGet, getrescaninfo, getseed, gettimelockaddress, listutxos, listwallets, lockwallet, type Options, recoverwallet, refreshOrderbookGetApiV1ObwatchRefreshorderbookGet, refreshOrderbookGetObwatchRefreshorderbookGet, refreshOrderbookPostApiV1ObwatchRefreshorderbookPost, refreshOrderbookPostObwatchRefreshorderbookPost, rescanblockchain, session, signmessage, startmaker, stopcoinjoin, stopmaker, token, tumblerplan, tumblerplandelete, tumblerstart, tumblerstatus, tumblerstop, unlockwallet, version, wallethistory, yieldgenreport } from '../sdk.gen';
+import type { ConfiggetData, ConfiggetError, ConfiggetResponse, ConfigsettingData, ConfigsettingError, ConfigsettingResponse, CreatewalletData, CreatewalletError, CreatewalletResponse, DirectsendData, DirectsendError, DirectsendResponse, DisplaywalletData, DisplaywalletError, DisplaywalletResponse, DocoinjoinData, DocoinjoinError, FreezeData, FreezeError, FreezeResponse, GetaddressData, GetaddressError, GetaddressResponse, GetlogsData, GetlogsResponse, GetOrderbookApiV1ObwatchOrderbookJsonGetData, GetOrderbookObwatchOrderbookJsonGetData, GetrescaninfoData, GetrescaninfoError, GetrescaninfoResponse, GetseedData, GetseedError, GetseedResponse, GettimelockaddressData, GettimelockaddressError, GettimelockaddressResponse, ListutxosData, ListutxosError, ListutxosResponse, ListwalletsData, ListwalletsResponse, LockwalletData, LockwalletError, LockwalletResponse, RecoverwalletData, RecoverwalletError, RecoverwalletResponse, RefreshOrderbookGetApiV1ObwatchRefreshorderbookGetData, RefreshOrderbookGetObwatchRefreshorderbookGetData, RefreshOrderbookPostApiV1ObwatchRefreshorderbookPostData, RefreshOrderbookPostObwatchRefreshorderbookPostData, RescanblockchainData, RescanblockchainError, RescanblockchainResponse, SessionData, SessionResponse2, SignmessageData, SignmessageError, SignmessageResponse, StartmakerData, StartmakerError, StopcoinjoinData, StopcoinjoinError, StopmakerData, StopmakerError, TokenData, TokenError, TokenResponse2, TumblerplanData, TumblerplandeleteData, TumblerplandeleteError, TumblerplandeleteResponse, TumblerplanError, TumblerplanResponse, TumblerstartData, TumblerstartError, TumblerstatusData, TumblerstatusError, TumblerstatusResponse, TumblerstopData, TumblerstopError, UnlockwalletData, UnlockwalletError, UnlockwalletResponse, VersionData, VersionResponse, WallethistoryData, WallethistoryError, WallethistoryResponse, YieldgenreportData, YieldgenreportResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -116,72 +39,12 @@ const createQueryKey = <TOptions extends Options>(id: string, options?: TOptions
     return [params];
 };
 
-export const lockwalletQueryKey = (options: Options<LockwalletData>) => createQueryKey('lockwallet', options);
-
-/**
- * block access to a currently decrypted wallet
- *
- * After this (authenticated) action, the wallet will not be readable or writeable.
- */
-export const lockwalletOptions = (options: Options<LockwalletData>) => queryOptions<LockwalletResponse, LockwalletError, LockwalletResponse, ReturnType<typeof lockwalletQueryKey>>({
-    queryFn: async ({ queryKey, signal }) => {
-        const { data } = await lockwallet({
-            ...options,
-            ...queryKey[0],
-            signal,
-            throwOnError: true
-        });
-        return data;
-    },
-    queryKey: lockwalletQueryKey(options)
-});
-
-export const displaywalletQueryKey = (options: Options<DisplaywalletData>) => createQueryKey('displaywallet', options);
-
-/**
- * get detailed breakdown of wallet contents by account.
- *
- * get detailed breakdown of wallet contents by account.
- */
-export const displaywalletOptions = (options: Options<DisplaywalletData>) => queryOptions<DisplaywalletResponse, DisplaywalletError, DisplaywalletResponse, ReturnType<typeof displaywalletQueryKey>>({
-    queryFn: async ({ queryKey, signal }) => {
-        const { data } = await displaywallet({
-            ...options,
-            ...queryKey[0],
-            signal,
-            throwOnError: true
-        });
-        return data;
-    },
-    queryKey: displaywalletQueryKey(options)
-});
-
-export const sessionQueryKey = (options?: Options<SessionData>) => createQueryKey('session', options);
-
-/**
- * get current status of backend
- *
- * get whether a wallet is loaded and whether coinjoin/maker are happening. if an auth token is provided, which is optional, it will be validated.
- */
-export const sessionOptions = (options?: Options<SessionData>) => queryOptions<SessionResponse2, SessionError, SessionResponse2, ReturnType<typeof sessionQueryKey>>({
-    queryFn: async ({ queryKey, signal }) => {
-        const { data } = await session({
-            ...options,
-            ...queryKey[0],
-            signal,
-            throwOnError: true
-        });
-        return data;
-    },
-    queryKey: sessionQueryKey(options)
-});
-
 export const versionQueryKey = (options?: Options<VersionData>) => createQueryKey('version', options);
 
 /**
- * get info on backend
+ * Get Info
  *
- * get information about backend, including the version of Joinmarket running.
+ * Return backend version information.
  */
 export const versionOptions = (options?: Options<VersionData>) => queryOptions<VersionResponse, DefaultError, VersionResponse, ReturnType<typeof versionQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
@@ -196,14 +59,37 @@ export const versionOptions = (options?: Options<VersionData>) => queryOptions<V
     queryKey: versionQueryKey(options)
 });
 
+export const sessionQueryKey = (options?: Options<SessionData>) => createQueryKey('session', options);
+
+/**
+ * Get Session
+ *
+ * Heartbeat / status endpoint.
+ *
+ * If an Authorization header is present, it is validated. An invalid
+ * token returns 401. A missing token is fine (unauthenticated access).
+ */
+export const sessionOptions = (options?: Options<SessionData>) => queryOptions<SessionResponse2, DefaultError, SessionResponse2, ReturnType<typeof sessionQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await session({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: sessionQueryKey(options)
+});
+
 export const listwalletsQueryKey = (options?: Options<ListwalletsData>) => createQueryKey('listwallets', options);
 
 /**
- * get current available wallets
+ * List Wallets
  *
- * get all wallet filenames in standard location as a list
+ * List available wallet files.
  */
-export const listwalletsOptions = (options?: Options<ListwalletsData>) => queryOptions<ListwalletsResponse, ListwalletsError, ListwalletsResponse, ReturnType<typeof listwalletsQueryKey>>({
+export const listwalletsOptions = (options?: Options<ListwalletsData>) => queryOptions<ListwalletsResponse, DefaultError, ListwalletsResponse, ReturnType<typeof listwalletsQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
         const { data } = await listwallets({
             ...options,
@@ -216,17 +102,73 @@ export const listwalletsOptions = (options?: Options<ListwalletsData>) => queryO
     queryKey: listwalletsQueryKey(options)
 });
 
-export const yieldgenreportQueryKey = (options?: Options<YieldgenreportData>) => createQueryKey('yieldgenreport', options);
+/**
+ * Wallet Create
+ *
+ * Create a new wallet.
+ */
+export const createwalletMutation = (options?: Partial<Options<CreatewalletData>>): UseMutationOptions<CreatewalletResponse, CreatewalletError, Options<CreatewalletData>> => {
+    const mutationOptions: UseMutationOptions<CreatewalletResponse, CreatewalletError, Options<CreatewalletData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await createwallet({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
 
 /**
- * get latest report on yield generating activity
+ * Wallet Recover
  *
- * Get list of coinjoins taken part in as maker (across all wallets). Data returned as list of strings, each one in the same comma separated format as found in yigen-statement.csv. Note that this returns all lines in the file, including the lines that are only present to represent the starting of a bot. Those lines contain the word Connected and can be thus discarded. The header line is also delivered and so can be ignored as per the client requirements.
- *
+ * Recover a wallet from a seed phrase.
  */
-export const yieldgenreportOptions = (options?: Options<YieldgenreportData>) => queryOptions<YieldgenreportResponse, YieldgenreportError, YieldgenreportResponse, ReturnType<typeof yieldgenreportQueryKey>>({
+export const recoverwalletMutation = (options?: Partial<Options<RecoverwalletData>>): UseMutationOptions<RecoverwalletResponse, RecoverwalletError, Options<RecoverwalletData>> => {
+    const mutationOptions: UseMutationOptions<RecoverwalletResponse, RecoverwalletError, Options<RecoverwalletData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await recoverwallet({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Wallet Unlock
+ *
+ * Unlock (decrypt) a wallet.
+ */
+export const unlockwalletMutation = (options?: Partial<Options<UnlockwalletData>>): UseMutationOptions<UnlockwalletResponse, UnlockwalletError, Options<UnlockwalletData>> => {
+    const mutationOptions: UseMutationOptions<UnlockwalletResponse, UnlockwalletError, Options<UnlockwalletData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await unlockwallet({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const lockwalletQueryKey = (options: Options<LockwalletData>) => createQueryKey('lockwallet', options);
+
+/**
+ * Wallet Lock
+ *
+ * Lock the current wallet and stop all services.
+ */
+export const lockwalletOptions = (options: Options<LockwalletData>) => queryOptions<LockwalletResponse, LockwalletError, LockwalletResponse, ReturnType<typeof lockwalletQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-        const { data } = await yieldgenreport({
+        const { data } = await lockwallet({
             ...options,
             ...queryKey[0],
             signal,
@@ -234,15 +176,98 @@ export const yieldgenreportOptions = (options?: Options<YieldgenreportData>) => 
         });
         return data;
     },
-    queryKey: yieldgenreportQueryKey(options)
+    queryKey: lockwalletQueryKey(options)
+});
+
+/**
+ * Token Refresh
+ *
+ * Refresh the access/refresh token pair.
+ */
+export const tokenMutation = (options?: Partial<Options<TokenData>>): UseMutationOptions<TokenResponse2, TokenError, Options<TokenData>> => {
+    const mutationOptions: UseMutationOptions<TokenResponse2, TokenError, Options<TokenData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await token({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const displaywalletQueryKey = (options: Options<DisplaywalletData>) => createQueryKey('displaywallet', options);
+
+/**
+ * Wallet Display
+ *
+ * Return full wallet display with accounts, branches, and entries.
+ */
+export const displaywalletOptions = (options: Options<DisplaywalletData>) => queryOptions<DisplaywalletResponse, DisplaywalletError, DisplaywalletResponse, ReturnType<typeof displaywalletQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await displaywallet({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: displaywalletQueryKey(options)
+});
+
+export const listutxosQueryKey = (options: Options<ListutxosData>) => createQueryKey('listutxos', options);
+
+/**
+ * List Utxos
+ *
+ * List all UTXOs in the wallet.
+ */
+export const listutxosOptions = (options: Options<ListutxosData>) => queryOptions<ListutxosResponse, ListutxosError, ListutxosResponse, ReturnType<typeof listutxosQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await listutxos({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: listutxosQueryKey(options)
+});
+
+export const wallethistoryQueryKey = (options: Options<WallethistoryData>) => createQueryKey('wallethistory', options);
+
+/**
+ * Wallet History
+ *
+ * Return the active wallet's CoinJoin/spend history (from history.csv).
+ *
+ * Entries are scoped to the active wallet's master fingerprint and returned
+ * most-recent first. Pass ``?limit=N`` to cap the number of entries. This is
+ * the same data the ``jm-wallet history`` CLI reads; it is read-only.
+ */
+export const wallethistoryOptions = (options: Options<WallethistoryData>) => queryOptions<WallethistoryResponse, WallethistoryError, WallethistoryResponse, ReturnType<typeof wallethistoryQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await wallethistory({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: wallethistoryQueryKey(options)
 });
 
 export const getaddressQueryKey = (options: Options<GetaddressData>) => createQueryKey('getaddress', options);
 
 /**
- * get a fresh address in the given account for depositing funds.
+ * Get New Address
  *
- * get a fresh address in the given account for depositing funds.
+ * Get a new receive address for the specified mixdepth.
  */
 export const getaddressOptions = (options: Options<GetaddressData>) => queryOptions<GetaddressResponse, GetaddressError, GetaddressResponse, ReturnType<typeof getaddressQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
@@ -257,12 +282,111 @@ export const getaddressOptions = (options: Options<GetaddressData>) => queryOpti
     queryKey: getaddressQueryKey(options)
 });
 
+export const gettimelockaddressQueryKey = (options: Options<GettimelockaddressData>) => createQueryKey('gettimelockaddress', options);
+
+/**
+ * Get Timelock Address
+ *
+ * Get a new timelocked (fidelity bond) address.
+ *
+ * The lockdate should be in YYYY-mm format (e.g., "2025-06").
+ */
+export const gettimelockaddressOptions = (options: Options<GettimelockaddressData>) => queryOptions<GettimelockaddressResponse, GettimelockaddressError, GettimelockaddressResponse, ReturnType<typeof gettimelockaddressQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await gettimelockaddress({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: gettimelockaddressQueryKey(options)
+});
+
+export const getseedQueryKey = (options: Options<GetseedData>) => createQueryKey('getseed', options);
+
+/**
+ * Get Seed
+ *
+ * Return the wallet's BIP39 mnemonic seed phrase.
+ */
+export const getseedOptions = (options: Options<GetseedData>) => queryOptions<GetseedResponse, GetseedError, GetseedResponse, ReturnType<typeof getseedQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getseed({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getseedQueryKey(options)
+});
+
+/**
+ * Freeze Utxo
+ *
+ * Freeze or unfreeze a UTXO.
+ */
+export const freezeMutation = (options?: Partial<Options<FreezeData>>): UseMutationOptions<FreezeResponse, FreezeError, Options<FreezeData>> => {
+    const mutationOptions: UseMutationOptions<FreezeResponse, FreezeError, Options<FreezeData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await freeze({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Config Get
+ *
+ * Read a config variable (in-memory override takes priority).
+ */
+export const configgetMutation = (options?: Partial<Options<ConfiggetData>>): UseMutationOptions<ConfiggetResponse, ConfiggetError, Options<ConfiggetData>> => {
+    const mutationOptions: UseMutationOptions<ConfiggetResponse, ConfiggetError, Options<ConfiggetData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await configget({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Config Set
+ *
+ * Set a config variable (in-memory only, not persisted).
+ */
+export const configsettingMutation = (options?: Partial<Options<ConfigsettingData>>): UseMutationOptions<ConfigsettingResponse, ConfigsettingError, Options<ConfigsettingData>> => {
+    const mutationOptions: UseMutationOptions<ConfigsettingResponse, ConfigsettingError, Options<ConfigsettingData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await configsetting({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
 export const rescanblockchainQueryKey = (options: Options<RescanblockchainData>) => createQueryKey('rescanblockchain', options);
 
 /**
- * Rescan the blockchain from a given blockheight
+ * Rescan Blockchain
  *
- * Use this operation on recovered wallets to re-sync the wallet
+ * Trigger a blockchain rescan from the given block height.
  */
 export const rescanblockchainOptions = (options: Options<RescanblockchainData>) => queryOptions<RescanblockchainResponse, RescanblockchainError, RescanblockchainResponse, ReturnType<typeof rescanblockchainQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
@@ -280,9 +404,9 @@ export const rescanblockchainOptions = (options: Options<RescanblockchainData>) 
 export const getrescaninfoQueryKey = (options: Options<GetrescaninfoData>) => createQueryKey('getrescaninfo', options);
 
 /**
- * get the current rescan status
+ * Get Rescan Info
  *
- * get the current rescan status
+ * Get rescan progress information.
  */
 export const getrescaninfoOptions = (options: Options<GetrescaninfoData>) => queryOptions<GetrescaninfoResponse, GetrescaninfoError, GetrescaninfoResponse, ReturnType<typeof getrescaninfoQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
@@ -297,16 +421,41 @@ export const getrescaninfoOptions = (options: Options<GetrescaninfoData>) => que
     queryKey: getrescaninfoQueryKey(options)
 });
 
-export const gettimelockaddressQueryKey = (options: Options<GettimelockaddressData>) => createQueryKey('gettimelockaddress', options);
+/**
+ * Sign Message
+ *
+ * Sign a message with a wallet key at the given HD path.
+ */
+export const signmessageMutation = (options?: Partial<Options<SignmessageData>>): UseMutationOptions<SignmessageResponse, SignmessageError, Options<SignmessageData>> => {
+    const mutationOptions: UseMutationOptions<SignmessageResponse, SignmessageError, Options<SignmessageData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await signmessage({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const yieldgenreportQueryKey = (options?: Options<YieldgenreportData>) => createQueryKey('yieldgenreport', options);
 
 /**
- * get a fresh timelock address
+ * Yieldgen Report
  *
- * get a new timelocked address, for depositing funds, to create a fidelity bond, which will automatically be used when the maker is started. specify the date in YYYY-mm as the last path parameter. Note that mixdepth is not specified as timelock addresses are always in mixdepth(account) zero.
+ * Return the yield generator (maker earnings) report.
+ *
+ * The joinmarket-ng maker logs its activity to ``history.csv`` (its single
+ * source of truth) rather than the legacy ``yigen-statement.csv`` file, so the
+ * report is synthesized from the successful maker rows of ``history.csv`` in
+ * the reference comma-separated format the Earn report UI expects (a header
+ * row, a ``Connected`` marker row, then one row per CoinJoin).
  */
-export const gettimelockaddressOptions = (options: Options<GettimelockaddressData>) => queryOptions<GettimelockaddressResponse, GettimelockaddressError, GettimelockaddressResponse, ReturnType<typeof gettimelockaddressQueryKey>>({
+export const yieldgenreportOptions = (options?: Options<YieldgenreportData>) => queryOptions<YieldgenreportResponse, DefaultError, YieldgenreportResponse, ReturnType<typeof yieldgenreportQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-        const { data } = await gettimelockaddress({
+        const { data } = await yieldgenreport({
             ...options,
             ...queryKey[0],
             signal,
@@ -314,33 +463,13 @@ export const gettimelockaddressOptions = (options: Options<GettimelockaddressDat
         });
         return data;
     },
-    queryKey: gettimelockaddressQueryKey(options)
-});
-
-export const listutxosQueryKey = (options: Options<ListutxosData>) => createQueryKey('listutxos', options);
-
-/**
- * list details of all utxos currently in the wallet.
- *
- * list details of all utxos currently in the wallet.
- */
-export const listutxosOptions = (options: Options<ListutxosData>) => queryOptions<ListutxosResponse, ListutxosError, ListutxosResponse, ReturnType<typeof listutxosQueryKey>>({
-    queryFn: async ({ queryKey, signal }) => {
-        const { data } = await listutxos({
-            ...options,
-            ...queryKey[0],
-            signal,
-            throwOnError: true
-        });
-        return data;
-    },
-    queryKey: listutxosQueryKey(options)
+    queryKey: yieldgenreportQueryKey(options)
 });
 
 /**
- * create and broadcast a transaction (without coinjoin)
+ * Direct Send
  *
- * create and broadcast a transaction (without coinjoin)
+ * Send bitcoin directly (without coinjoin).
  */
 export const directsendMutation = (options?: Partial<Options<DirectsendData>>): UseMutationOptions<DirectsendResponse, DirectsendError, Options<DirectsendData>> => {
     const mutationOptions: UseMutationOptions<DirectsendResponse, DirectsendError, Options<DirectsendData>> = {
@@ -357,9 +486,48 @@ export const directsendMutation = (options?: Partial<Options<DirectsendData>>): 
 };
 
 /**
- * Start the yield generator service.
+ * Do Coinjoin
  *
- * Start the yield generator service with the configuration settings specified in the POST request. Note that if fidelity bonds are enabled in the wallet, and a timelock address has been generated, and then funded, the fidelity bond will automatically be advertised without any specific configuration in this request. Note that if the wallet does not have confirmed coins, or another taker or maker coinjoin service is already running, the maker will not start.
+ * Initiate a coinjoin transaction (asynchronous).
+ */
+export const docoinjoinMutation = (options?: Partial<Options<DocoinjoinData>>): UseMutationOptions<unknown, DocoinjoinError, Options<DocoinjoinData>> => {
+    const mutationOptions: UseMutationOptions<unknown, DocoinjoinError, Options<DocoinjoinData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await docoinjoin({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const stopcoinjoinQueryKey = (options: Options<StopcoinjoinData>) => createQueryKey('stopcoinjoin', options);
+
+/**
+ * Stop Coinjoin
+ *
+ * Stop a running coinjoin/tumbler.
+ */
+export const stopcoinjoinOptions = (options: Options<StopcoinjoinData>) => queryOptions<unknown, StopcoinjoinError, unknown, ReturnType<typeof stopcoinjoinQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await stopcoinjoin({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: stopcoinjoinQueryKey(options)
+});
+
+/**
+ * Start Maker
+ *
+ * Start the yield generator (maker) service.
  */
 export const startmakerMutation = (options?: Partial<Options<StartmakerData>>): UseMutationOptions<unknown, StartmakerError, Options<StartmakerData>> => {
     const mutationOptions: UseMutationOptions<unknown, StartmakerError, Options<StartmakerData>> = {
@@ -378,9 +546,9 @@ export const startmakerMutation = (options?: Partial<Options<StartmakerData>>): 
 export const stopmakerQueryKey = (options: Options<StopmakerData>) => createQueryKey('stopmaker', options);
 
 /**
- * stop the yield generator service
+ * Stop Maker
  *
- * stop the yield generator service
+ * Stop the yield generator (maker) service.
  */
 export const stopmakerOptions = (options: Options<StopmakerData>) => queryOptions<unknown, StopmakerError, unknown, ReturnType<typeof stopmakerQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
@@ -396,14 +564,14 @@ export const stopmakerOptions = (options: Options<StopmakerData>) => queryOption
 });
 
 /**
- * initiate a coinjoin as taker
+ * Delete Plan Endpoint
  *
- * initiate a coinjoin as taker
+ * Remove a non-running plan from disk.
  */
-export const docoinjoinMutation = (options?: Partial<Options<DocoinjoinData>>): UseMutationOptions<unknown, DocoinjoinError, Options<DocoinjoinData>> => {
-    const mutationOptions: UseMutationOptions<unknown, DocoinjoinError, Options<DocoinjoinData>> = {
+export const tumblerplandeleteMutation = (options?: Partial<Options<TumblerplandeleteData>>): UseMutationOptions<TumblerplandeleteResponse, TumblerplandeleteError, Options<TumblerplandeleteData>> => {
+    const mutationOptions: UseMutationOptions<TumblerplandeleteResponse, TumblerplandeleteError, Options<TumblerplandeleteData>> = {
         mutationFn: async (fnOptions) => {
-            const { data } = await docoinjoin({
+            const { data } = await tumblerplandelete({
                 ...options,
                 ...fnOptions,
                 throwOnError: true
@@ -414,16 +582,45 @@ export const docoinjoinMutation = (options?: Partial<Options<DocoinjoinData>>): 
     return mutationOptions;
 };
 
-export const getscheduleQueryKey = (options: Options<GetscheduleData>) => createQueryKey('getschedule', options);
+/**
+ * Create Plan
+ *
+ * Build and persist a fresh tumble plan for the active wallet.
+ *
+ * An already-running plan for the wallet is always protected: callers must
+ * ``POST /tumbler/stop`` first. A plan in any other state (pending,
+ * completed, failed, cancelled) is overwritten unconditionally -- passing
+ * ``force=true`` is only required for a pending plan, to make the
+ * destructive intent explicit.
+ */
+export const tumblerplanMutation = (options?: Partial<Options<TumblerplanData>>): UseMutationOptions<TumblerplanResponse, TumblerplanError, Options<TumblerplanData>> => {
+    const mutationOptions: UseMutationOptions<TumblerplanResponse, TumblerplanError, Options<TumblerplanData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await tumblerplan({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const tumblerstatusQueryKey = (options: Options<TumblerstatusData>) => createQueryKey('tumblerstatus', options);
 
 /**
- * get the schedule that is currently running
+ * Get Status
  *
- * Get the current transaction schedule if one is running.
+ * Return the live plan if the runner is active, otherwise the on-disk plan.
+ *
+ * When the on-disk plan is ``RUNNING`` but no runner is live, the response's
+ * ``stale`` flag is set so the UI can prompt the user to acknowledge the
+ * failure and delete the plan.
  */
-export const getscheduleOptions = (options: Options<GetscheduleData>) => queryOptions<GetscheduleResponse, GetscheduleError, GetscheduleResponse, ReturnType<typeof getscheduleQueryKey>>({
+export const tumblerstatusOptions = (options: Options<TumblerstatusData>) => queryOptions<TumblerstatusResponse, TumblerstatusError, TumblerstatusResponse, ReturnType<typeof tumblerstatusQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-        const { data } = await getschedule({
+        const { data } = await tumblerstatus({
             ...options,
             ...queryKey[0],
             signal,
@@ -431,18 +628,18 @@ export const getscheduleOptions = (options: Options<GetscheduleData>) => queryOp
         });
         return data;
     },
-    queryKey: getscheduleQueryKey(options)
+    queryKey: tumblerstatusQueryKey(options)
 });
 
 /**
- * create and run a schedule of transactions
+ * Start Plan
  *
- * Creates and then starts a schedule of transactions.
+ * Load the pending plan and run it in the background.
  */
-export const runscheduleMutation = (options?: Partial<Options<RunscheduleData>>): UseMutationOptions<RunscheduleResponse, RunscheduleError, Options<RunscheduleData>> => {
-    const mutationOptions: UseMutationOptions<RunscheduleResponse, RunscheduleError, Options<RunscheduleData>> = {
+export const tumblerstartMutation = (options?: Partial<Options<TumblerstartData>>): UseMutationOptions<unknown, TumblerstartError, Options<TumblerstartData>> => {
+    const mutationOptions: UseMutationOptions<unknown, TumblerstartError, Options<TumblerstartData>> = {
         mutationFn: async (fnOptions) => {
-            const { data } = await runschedule({
+            const { data } = await tumblerstart({
                 ...options,
                 ...fnOptions,
                 throwOnError: true
@@ -453,16 +650,35 @@ export const runscheduleMutation = (options?: Partial<Options<RunscheduleData>>)
     return mutationOptions;
 };
 
-export const stopcoinjoinQueryKey = (options: Options<StopcoinjoinData>) => createQueryKey('stopcoinjoin', options);
+/**
+ * Stop Plan
+ *
+ * Cooperatively stop the running plan; transition it to ``CANCELLED``.
+ */
+export const tumblerstopMutation = (options?: Partial<Options<TumblerstopData>>): UseMutationOptions<unknown, TumblerstopError, Options<TumblerstopData>> => {
+    const mutationOptions: UseMutationOptions<unknown, TumblerstopError, Options<TumblerstopData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await tumblerstop({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getOrderbookApiV1ObwatchOrderbookJsonGetQueryKey = (options?: Options<GetOrderbookApiV1ObwatchOrderbookJsonGetData>) => createQueryKey('getOrderbookApiV1ObwatchOrderbookJsonGet', options);
 
 /**
- * stop a running coinjoin attempt
+ * Get Orderbook
  *
- * stop a running coinjoin attempt
+ * Proxy orderbook data from the orderbook_watcher service.
  */
-export const stopcoinjoinOptions = (options: Options<StopcoinjoinData>) => queryOptions<unknown, StopcoinjoinError, unknown, ReturnType<typeof stopcoinjoinQueryKey>>({
+export const getOrderbookApiV1ObwatchOrderbookJsonGetOptions = (options?: Options<GetOrderbookApiV1ObwatchOrderbookJsonGetData>) => queryOptions<unknown, DefaultError, unknown, ReturnType<typeof getOrderbookApiV1ObwatchOrderbookJsonGetQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-        const { data } = await stopcoinjoin({
+        const { data } = await getOrderbookApiV1ObwatchOrderbookJsonGet({
             ...options,
             ...queryKey[0],
             signal,
@@ -470,76 +686,19 @@ export const stopcoinjoinOptions = (options: Options<StopcoinjoinData>) => query
         });
         return data;
     },
-    queryKey: stopcoinjoinQueryKey(options)
+    queryKey: getOrderbookApiV1ObwatchOrderbookJsonGetQueryKey(options)
 });
 
-/**
- * change a config variable
- *
- * change a config variable (for the duration of this backend daemon process instance)
- */
-export const configsettingMutation = (options?: Partial<Options<ConfigsettingData>>): UseMutationOptions<ConfigsettingResponse, ConfigsettingError, Options<ConfigsettingData>> => {
-    const mutationOptions: UseMutationOptions<ConfigsettingResponse, ConfigsettingError, Options<ConfigsettingData>> = {
-        mutationFn: async (fnOptions) => {
-            const { data } = await configsetting({
-                ...options,
-                ...fnOptions,
-                throwOnError: true
-            });
-            return data;
-        }
-    };
-    return mutationOptions;
-};
+export const refreshOrderbookGetApiV1ObwatchRefreshorderbookGetQueryKey = (options?: Options<RefreshOrderbookGetApiV1ObwatchRefreshorderbookGetData>) => createQueryKey('refreshOrderbookGetApiV1ObwatchRefreshorderbookGet', options);
 
 /**
- * get the value of a specific config setting
+ * Refresh Orderbook Get
  *
- * Get the value of a specific config setting. Note values are always returned as string.
+ * GET compatibility endpoint for orderbook refresh.
  */
-export const configgetMutation = (options?: Partial<Options<ConfiggetData>>): UseMutationOptions<ConfiggetResponse, ConfiggetError, Options<ConfiggetData>> => {
-    const mutationOptions: UseMutationOptions<ConfiggetResponse, ConfiggetError, Options<ConfiggetData>> = {
-        mutationFn: async (fnOptions) => {
-            const { data } = await configget({
-                ...options,
-                ...fnOptions,
-                throwOnError: true
-            });
-            return data;
-        }
-    };
-    return mutationOptions;
-};
-
-/**
- * freeze or unfreeze an individual utxo for spending
- *
- * freeze or unfreeze an individual utxo for spending
- */
-export const freezeMutation = (options?: Partial<Options<FreezeData>>): UseMutationOptions<FreezeResponse2, FreezeError, Options<FreezeData>> => {
-    const mutationOptions: UseMutationOptions<FreezeResponse2, FreezeError, Options<FreezeData>> = {
-        mutationFn: async (fnOptions) => {
-            const { data } = await freeze({
-                ...options,
-                ...fnOptions,
-                throwOnError: true
-            });
-            return data;
-        }
-    };
-    return mutationOptions;
-};
-
-export const getseedQueryKey = (options: Options<GetseedData>) => createQueryKey('getseed', options);
-
-/**
- * get the mnemonic recovery phrase with the optional passphrase
- *
- * Get the mnemonic recovery phrase with the optional passphrase. Not the response is a sentence with few line breaks.
- */
-export const getseedOptions = (options: Options<GetseedData>) => queryOptions<GetseedResponse, GetseedError, GetseedResponse, ReturnType<typeof getseedQueryKey>>({
+export const refreshOrderbookGetApiV1ObwatchRefreshorderbookGetOptions = (options?: Options<RefreshOrderbookGetApiV1ObwatchRefreshorderbookGetData>) => queryOptions<unknown, DefaultError, unknown, ReturnType<typeof refreshOrderbookGetApiV1ObwatchRefreshorderbookGetQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-        const { data } = await getseed({
+        const { data } = await refreshOrderbookGetApiV1ObwatchRefreshorderbookGet({
             ...options,
             ...queryKey[0],
             signal,
@@ -547,5 +706,103 @@ export const getseedOptions = (options: Options<GetseedData>) => queryOptions<Ge
         });
         return data;
     },
-    queryKey: getseedQueryKey(options)
+    queryKey: refreshOrderbookGetApiV1ObwatchRefreshorderbookGetQueryKey(options)
 });
+
+/**
+ * Refresh Orderbook Post
+ *
+ * POST compatibility endpoint for JAM frontend refresh calls.
+ */
+export const refreshOrderbookPostApiV1ObwatchRefreshorderbookPostMutation = (options?: Partial<Options<RefreshOrderbookPostApiV1ObwatchRefreshorderbookPostData>>): UseMutationOptions<unknown, DefaultError, Options<RefreshOrderbookPostApiV1ObwatchRefreshorderbookPostData>> => {
+    const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<RefreshOrderbookPostApiV1ObwatchRefreshorderbookPostData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await refreshOrderbookPostApiV1ObwatchRefreshorderbookPost({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getlogsQueryKey = (options?: Options<GetlogsData>) => createQueryKey('getlogs', options);
+
+/**
+ * Get Logs
+ *
+ * Return the recent in-memory log buffer as plain text.
+ */
+export const getlogsOptions = (options?: Options<GetlogsData>) => queryOptions<GetlogsResponse, DefaultError, GetlogsResponse, ReturnType<typeof getlogsQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getlogs({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getlogsQueryKey(options)
+});
+
+export const getOrderbookObwatchOrderbookJsonGetQueryKey = (options?: Options<GetOrderbookObwatchOrderbookJsonGetData>) => createQueryKey('getOrderbookObwatchOrderbookJsonGet', options);
+
+/**
+ * Get Orderbook
+ *
+ * Proxy orderbook data from the orderbook_watcher service.
+ */
+export const getOrderbookObwatchOrderbookJsonGetOptions = (options?: Options<GetOrderbookObwatchOrderbookJsonGetData>) => queryOptions<unknown, DefaultError, unknown, ReturnType<typeof getOrderbookObwatchOrderbookJsonGetQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getOrderbookObwatchOrderbookJsonGet({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getOrderbookObwatchOrderbookJsonGetQueryKey(options)
+});
+
+export const refreshOrderbookGetObwatchRefreshorderbookGetQueryKey = (options?: Options<RefreshOrderbookGetObwatchRefreshorderbookGetData>) => createQueryKey('refreshOrderbookGetObwatchRefreshorderbookGet', options);
+
+/**
+ * Refresh Orderbook Get
+ *
+ * GET compatibility endpoint for orderbook refresh.
+ */
+export const refreshOrderbookGetObwatchRefreshorderbookGetOptions = (options?: Options<RefreshOrderbookGetObwatchRefreshorderbookGetData>) => queryOptions<unknown, DefaultError, unknown, ReturnType<typeof refreshOrderbookGetObwatchRefreshorderbookGetQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await refreshOrderbookGetObwatchRefreshorderbookGet({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: refreshOrderbookGetObwatchRefreshorderbookGetQueryKey(options)
+});
+
+/**
+ * Refresh Orderbook Post
+ *
+ * POST compatibility endpoint for JAM frontend refresh calls.
+ */
+export const refreshOrderbookPostObwatchRefreshorderbookPostMutation = (options?: Partial<Options<RefreshOrderbookPostObwatchRefreshorderbookPostData>>): UseMutationOptions<unknown, DefaultError, Options<RefreshOrderbookPostObwatchRefreshorderbookPostData>> => {
+    const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<RefreshOrderbookPostObwatchRefreshorderbookPostData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await refreshOrderbookPostObwatchRefreshorderbookPost({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};

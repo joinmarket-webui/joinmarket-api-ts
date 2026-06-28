@@ -9,8 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v1.0.0] - 2026-06-28
 
 ### Added
-- Migrate client code and OpenAPI spec to JoinMarket-NG.
-- Synchronize latest OpenAPI spec with JoinMarket-NG backend, adding `backend` field to `GetInfoResponse`.
+- **Migration to JoinMarket-NG:** Updated the package to target the new JoinMarket-NG backend OpenAPI specification.
+- **Client & SDK Regeneration:** Fully regenerated all client TypeScript definitions, SDK options, and React Query integration hooks.
+- **API Sync:** Synchronized latest API changes from the running JoinMarket-NG backend (e.g., adding `backend` to `GetInfoResponse`).
+
 
 ### Changed
 - @tanstack/react-query is an optional peer dependency

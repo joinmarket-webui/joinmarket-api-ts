@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v1.0.0] - 2026-06-28
+
+### Added
+- Migrate client code and OpenAPI spec to JoinMarket-NG.
+- Synchronize latest OpenAPI spec with JoinMarket-NG backend, adding `backend` field to `GetInfoResponse`.
+
 ### Changed
 - @tanstack/react-query is an optional peer dependency
 
@@ -25,7 +31,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/joinmarket-webui/joinmarket-api-ts/compare/v0.3.0...HEAD
-[v0.3.0]: https://github.com/joinmarket-webui/joinmarket-api-ts/compare/v0.2.0...v0.3.0
-[v0.2.0]: https://github.com/joinmarket-webui/joinmarket-api-ts/compare/v0.1.0...v0.2.0
-[v0.1.0]: https://github.com/joinmarket-webui/joinmarket-api-ts/releases/tag/v0.1.0
+[Unreleased]: https://github.com/joinmarket-webui/joinmarket-ng-api-ts/compare/v1.0.0...HEAD
+[v1.0.0]: https://github.com/joinmarket-webui/joinmarket-ng-api-ts/compare/v0.3.0...v1.0.0
+[v0.3.0]: https://github.com/joinmarket-webui/joinmarket-ng-api-ts/compare/v0.2.0...v0.3.0
+[v0.2.0]: https://github.com/joinmarket-webui/joinmarket-ng-api-ts/compare/v0.1.0...v0.2.0
+[v0.1.0]: https://github.com/joinmarket-webui/joinmarket-ng-api-ts/releases/tag/v0.1.0

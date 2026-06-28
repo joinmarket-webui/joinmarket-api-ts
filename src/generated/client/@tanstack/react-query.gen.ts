@@ -44,7 +44,7 @@ export const versionQueryKey = (options?: Options<VersionData>) => createQueryKe
 /**
  * Get Info
  *
- * Return backend version information.
+ * Return backend information.
  */
 export const versionOptions = (options?: Options<VersionData>) => queryOptions<VersionResponse, DefaultError, VersionResponse, ReturnType<typeof versionQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {

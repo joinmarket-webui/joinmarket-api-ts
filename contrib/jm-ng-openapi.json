@@ -9,7 +9,7 @@
     "/api/v1/getinfo": {
       "get": {
         "summary": "Get Info",
-        "description": "Return backend version information.",
+        "description": "Return backend information.",
         "operationId": "version",
         "responses": {
           "200": {
@@ -1676,11 +1676,16 @@
           "version": {
             "type": "string",
             "title": "Version"
+          },
+          "backend": {
+            "type": "string",
+            "title": "Backend"
           }
         },
         "type": "object",
         "required": [
-          "version"
+          "version",
+          "backend"
         ],
         "title": "GetInfoResponse",
         "description": "Response for GET /api/v1/getinfo."

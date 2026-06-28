@@ -218,6 +218,10 @@ export type GetInfoResponse = {
      * Version
      */
     version: string;
+    /**
+     * Backend
+     */
+    backend: string;
 };
 
 /**

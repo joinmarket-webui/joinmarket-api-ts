@@ -2,25 +2,22 @@ name: Build
 
 on:
   push:
-    branches: [master, devel]
+    branches: [main, devel]
   pull_request:
-    branches: [master, devel]
+    branches: [main, devel]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: ['v24.11.1']
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Setup (Node.js ${{ matrix.node-version }})
-        uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version-file: .nvmrc
 
       - name: Install
         run: npm ci

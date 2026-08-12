@@ -205,7 +205,7 @@ export const rescanblockchain = <ThrowOnError extends boolean = false>(options: 
 /**
  * Get Rescan Info
  *
- * Get rescan progress information.
+ * Get rescan progress information (Bitcoin Core is the source of truth).
  */
 export const getrescaninfo = <ThrowOnError extends boolean = false>(options: Options<GetrescaninfoData, ThrowOnError>): RequestResult<GetrescaninfoResponses, GetrescaninfoErrors, ThrowOnError> => (options.client ?? client).get<GetrescaninfoResponses, GetrescaninfoErrors, ThrowOnError>({ url: '/api/v1/wallet/{walletname}/getrescaninfo', ...options });
 
@@ -232,7 +232,7 @@ export const signmessage = <ThrowOnError extends boolean = false>(options: Optio
  * source of truth) rather than the legacy ``yigen-statement.csv`` file, so the
  * report is synthesized from the successful maker rows of ``history.csv`` in
  * the reference comma-separated format the Earn report UI expects (a header
- * row, a ``Connected`` marker row, then one row per CoinJoin).
+ * row followed by one row per CoinJoin).
  */
 export const yieldgenreport = <ThrowOnError extends boolean = false>(options?: Options<YieldgenreportData, ThrowOnError>): RequestResult<YieldgenreportResponses, unknown, ThrowOnError> => (options?.client ?? client).get<YieldgenreportResponses, unknown, ThrowOnError>({ url: '/api/v1/wallet/yieldgen/report', ...options });
 
@@ -325,8 +325,8 @@ export const tumblerplan = <ThrowOnError extends boolean = false>(options: Optio
  * Return the live plan if the runner is active, otherwise the on-disk plan.
  *
  * When the on-disk plan is ``RUNNING`` but no runner is live, the response's
- * ``stale`` flag is set so the UI can prompt the user to acknowledge the
- * failure and delete the plan.
+ * ``stale`` flag is set. A persisted confirmation wait is reset to pending;
+ * all other stale plans are marked failed.
  */
 export const tumblerstatus = <ThrowOnError extends boolean = false>(options: Options<TumblerstatusData, ThrowOnError>): RequestResult<TumblerstatusResponses, TumblerstatusErrors, ThrowOnError> => (options.client ?? client).get<TumblerstatusResponses, TumblerstatusErrors, ThrowOnError>({ url: '/api/v1/wallet/{walletname}/tumbler/status', ...options });
 

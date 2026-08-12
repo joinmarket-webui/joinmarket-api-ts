@@ -14,7 +14,7 @@ import { writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { dirname } from 'node:path'
-import yaml from 'js-yaml'
+import { dump } from 'js-yaml'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const outDir = resolve(here, '..', 'contrib')
@@ -45,6 +45,6 @@ try {
 const jsonPath = resolve(outDir, 'jm-ng-openapi.json')
 const yamlPath = resolve(outDir, 'jm-ng-openapi.yaml')
 writeFileSync(jsonPath, JSON.stringify(parsed, null, 2) + '\n')
-writeFileSync(yamlPath, yaml.dump(parsed, { noRefs: true, lineWidth: 120 }))
+writeFileSync(yamlPath, dump(parsed, { noRefs: true, lineWidth: 120 }))
 console.log(`wrote ${jsonPath}`)
 console.log(`wrote ${yamlPath}`)

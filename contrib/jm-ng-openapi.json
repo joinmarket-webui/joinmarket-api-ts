@@ -754,7 +754,7 @@
     "/api/v1/wallet/{walletname}/getrescaninfo": {
       "get": {
         "summary": "Get Rescan Info",
-        "description": "Get rescan progress information.",
+        "description": "Get rescan progress information (Bitcoin Core is the source of truth).",
         "operationId": "getrescaninfo",
         "parameters": [
           {
@@ -844,7 +844,7 @@
     "/api/v1/wallet/yieldgen/report": {
       "get": {
         "summary": "Yieldgen Report",
-        "description": "Return the yield generator (maker earnings) report.\n\nThe joinmarket-ng maker logs its activity to ``history.csv`` (its single\nsource of truth) rather than the legacy ``yigen-statement.csv`` file, so the\nreport is synthesized from the successful maker rows of ``history.csv`` in\nthe reference comma-separated format the Earn report UI expects (a header\nrow, a ``Connected`` marker row, then one row per CoinJoin).",
+        "description": "Return the yield generator (maker earnings) report.\n\nThe joinmarket-ng maker logs its activity to ``history.csv`` (its single\nsource of truth) rather than the legacy ``yigen-statement.csv`` file, so the\nreport is synthesized from the successful maker rows of ``history.csv`` in\nthe reference comma-separated format the Earn report UI expects (a header\nrow followed by one row per CoinJoin).",
         "operationId": "yieldgenreport",
         "responses": {
           "200": {
@@ -1166,7 +1166,7 @@
     "/api/v1/wallet/{walletname}/tumbler/status": {
       "get": {
         "summary": "Get Status",
-        "description": "Return the live plan if the runner is active, otherwise the on-disk plan.\n\nWhen the on-disk plan is ``RUNNING`` but no runner is live, the response's\n``stale`` flag is set so the UI can prompt the user to acknowledge the\nfailure and delete the plan.",
+        "description": "Return the live plan if the runner is active, otherwise the on-disk plan.\n\nWhen the on-disk plan is ``RUNNING`` but no runner is live, the response's\n``stale`` flag is set. A persisted confirmation wait is reset to pending;\nall other stale plans are marked failed.",
         "operationId": "tumblerstatus",
         "parameters": [
           {
@@ -1735,6 +1735,12 @@
           },
           "role": {
             "type": "string",
+            "enum": [
+              "maker",
+              "taker",
+              "send",
+              "deposit"
+            ],
             "title": "Role",
             "default": "taker"
           },
@@ -1758,10 +1764,21 @@
             "title": "Txid",
             "default": ""
           },
-          "cj_amount": {
+          "amount": {
             "type": "integer",
-            "title": "Cj Amount",
+            "title": "Amount",
             "default": 0
+          },
+          "cj_amount": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cj Amount"
           },
           "peer_count": {
             "anyOf": [
@@ -1805,9 +1822,15 @@
             "default": 0
           },
           "source_mixdepth": {
-            "type": "integer",
-            "title": "Source Mixdepth",
-            "default": 0
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Mixdepth"
           },
           "destination_address": {
             "type": "string",
@@ -1833,6 +1856,15 @@
             "type": "string",
             "title": "Network",
             "default": ""
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "protocol",
+              "onchain"
+            ],
+            "title": "Source",
+            "default": "protocol"
           }
         },
         "type": "object",
@@ -1907,6 +1939,20 @@
           "seedphrase": {
             "type": "string",
             "title": "Seedphrase"
+          },
+          "scan_range": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 10000,
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scan Range",
+            "description": "Regular address indices to import per branch during descriptor-backend recovery. Widen-only: values below the configured [wallet].scan_range are raised to it, so legacy gaplimit-style values cannot shrink coverage."
           }
         },
         "type": "object",
@@ -1948,6 +1994,17 @@
               }
             ],
             "title": "Progress"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
           }
         },
         "type": "object",
@@ -2535,6 +2592,17 @@
             "type": "integer",
             "title": "Nversion",
             "default": 2
+          },
+          "confirmations": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confirmations"
           }
         },
         "type": "object",

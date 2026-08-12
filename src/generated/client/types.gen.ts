@@ -270,7 +270,7 @@ export type HistoryEntry = {
     /**
      * Role
      */
-    role?: string;
+    role?: 'maker' | 'taker' | 'send' | 'deposit';
     /**
      * Success
      */
@@ -288,9 +288,13 @@ export type HistoryEntry = {
      */
     txid?: string;
     /**
+     * Amount
+     */
+    amount?: number;
+    /**
      * Cj Amount
      */
-    cj_amount?: number;
+    cj_amount?: number | null;
     /**
      * Peer Count
      */
@@ -322,7 +326,7 @@ export type HistoryEntry = {
     /**
      * Source Mixdepth
      */
-    source_mixdepth?: number;
+    source_mixdepth?: number | null;
     /**
      * Destination Address
      */
@@ -343,6 +347,10 @@ export type HistoryEntry = {
      * Network
      */
     network?: string;
+    /**
+     * Source
+     */
+    source?: 'protocol' | 'onchain';
 };
 
 /**
@@ -407,6 +415,12 @@ export type RecoverWalletRequest = {
      * Seedphrase
      */
     seedphrase: string;
+    /**
+     * Scan Range
+     *
+     * Regular address indices to import per branch during descriptor-backend recovery. Widen-only: values below the configured [wallet].scan_range are raised to it, so legacy gaplimit-style values cannot shrink coverage.
+     */
+    scan_range?: number | null;
 };
 
 /**
@@ -435,6 +449,10 @@ export type RescanInfoResponse = {
      * Progress
      */
     progress?: number | null;
+    /**
+     * Error
+     */
+    error?: string | null;
 };
 
 /**
@@ -788,6 +806,10 @@ export type TxInfo = {
      * Nversion
      */
     nVersion?: number;
+    /**
+     * Confirmations
+     */
+    confirmations?: number | null;
 };
 
 /**

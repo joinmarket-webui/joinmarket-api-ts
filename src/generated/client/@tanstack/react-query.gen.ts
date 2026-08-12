@@ -406,7 +406,7 @@ export const getrescaninfoQueryKey = (options: Options<GetrescaninfoData>) => cr
 /**
  * Get Rescan Info
  *
- * Get rescan progress information.
+ * Get rescan progress information (Bitcoin Core is the source of truth).
  */
 export const getrescaninfoOptions = (options: Options<GetrescaninfoData>) => queryOptions<GetrescaninfoResponse, GetrescaninfoError, GetrescaninfoResponse, ReturnType<typeof getrescaninfoQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
@@ -451,7 +451,7 @@ export const yieldgenreportQueryKey = (options?: Options<YieldgenreportData>) =>
  * source of truth) rather than the legacy ``yigen-statement.csv`` file, so the
  * report is synthesized from the successful maker rows of ``history.csv`` in
  * the reference comma-separated format the Earn report UI expects (a header
- * row, a ``Connected`` marker row, then one row per CoinJoin).
+ * row followed by one row per CoinJoin).
  */
 export const yieldgenreportOptions = (options?: Options<YieldgenreportData>) => queryOptions<YieldgenreportResponse, DefaultError, YieldgenreportResponse, ReturnType<typeof yieldgenreportQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
@@ -615,8 +615,8 @@ export const tumblerstatusQueryKey = (options: Options<TumblerstatusData>) => cr
  * Return the live plan if the runner is active, otherwise the on-disk plan.
  *
  * When the on-disk plan is ``RUNNING`` but no runner is live, the response's
- * ``stale`` flag is set so the UI can prompt the user to acknowledge the
- * failure and delete the plan.
+ * ``stale`` flag is set. A persisted confirmation wait is reset to pending;
+ * all other stale plans are marked failed.
  */
 export const tumblerstatusOptions = (options: Options<TumblerstatusData>) => queryOptions<TumblerstatusResponse, TumblerstatusError, TumblerstatusResponse, ReturnType<typeof tumblerstatusQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {

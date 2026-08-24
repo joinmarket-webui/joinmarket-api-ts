@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v1.1.0] - 2026-08-24
+
 ### Added
 - **Coin control on direct-send:** `input_utxos` on `DirectSendRequest`, an optional list of `txid:vout` strings that pins the exact inputs to spend (joinmarket-ng#587). Omitting it keeps the previous auto-selecting behaviour.
 - **Coin control on coinjoin:** `input_utxos` on `DoCoinjoinRequest`, same shape and semantics as the direct-send field above (joinmarket-ng#587). Not previously synced from the backend even though it shipped alongside the direct-send field.
@@ -42,7 +44,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/joinmarket-webui/joinmarket-ng-api-ts/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/joinmarket-webui/joinmarket-ng-api-ts/compare/v1.1.0...HEAD
+[v1.1.0]: https://github.com/joinmarket-webui/joinmarket-ng-api-ts/compare/v1.0.0...v1.1.0
 [v1.0.0]: https://github.com/joinmarket-webui/joinmarket-ng-api-ts/compare/v0.3.0...v1.0.0
 [v0.3.0]: https://github.com/joinmarket-webui/joinmarket-ng-api-ts/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/joinmarket-webui/joinmarket-ng-api-ts/compare/v0.1.0...v0.2.0

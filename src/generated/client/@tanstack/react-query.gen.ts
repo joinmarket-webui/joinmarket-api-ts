@@ -3,8 +3,8 @@
 import { type DefaultError, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { configget, configsetting, createwallet, directsend, displaywallet, docoinjoin, freeze, getaddress, getlogs, getOrderbookApiV1ObwatchOrderbookJsonGet, getOrderbookObwatchOrderbookJsonGet, getrescaninfo, getseed, gettimelockaddress, listutxos, listwallets, lockwallet, type Options, recoverwallet, refreshOrderbookGetApiV1ObwatchRefreshorderbookGet, refreshOrderbookGetObwatchRefreshorderbookGet, refreshOrderbookPostApiV1ObwatchRefreshorderbookPost, refreshOrderbookPostObwatchRefreshorderbookPost, rescanblockchain, session, signmessage, startmaker, stopcoinjoin, stopmaker, token, tumblerplan, tumblerplandelete, tumblerstart, tumblerstatus, tumblerstop, unlockwallet, version, wallethistory, yieldgenreport } from '../sdk.gen';
-import type { ConfiggetData, ConfiggetError, ConfiggetResponse, ConfigsettingData, ConfigsettingError, ConfigsettingResponse, CreatewalletData, CreatewalletError, CreatewalletResponse, DirectsendData, DirectsendError, DirectsendResponse, DisplaywalletData, DisplaywalletError, DisplaywalletResponse, DocoinjoinData, DocoinjoinError, FreezeData, FreezeError, FreezeResponse, GetaddressData, GetaddressError, GetaddressResponse, GetlogsData, GetlogsResponse, GetOrderbookApiV1ObwatchOrderbookJsonGetData, GetOrderbookObwatchOrderbookJsonGetData, GetrescaninfoData, GetrescaninfoError, GetrescaninfoResponse, GetseedData, GetseedError, GetseedResponse, GettimelockaddressData, GettimelockaddressError, GettimelockaddressResponse, ListutxosData, ListutxosError, ListutxosResponse, ListwalletsData, ListwalletsResponse, LockwalletData, LockwalletError, LockwalletResponse, RecoverwalletData, RecoverwalletError, RecoverwalletResponse, RefreshOrderbookGetApiV1ObwatchRefreshorderbookGetData, RefreshOrderbookGetObwatchRefreshorderbookGetData, RefreshOrderbookPostApiV1ObwatchRefreshorderbookPostData, RefreshOrderbookPostObwatchRefreshorderbookPostData, RescanblockchainData, RescanblockchainError, RescanblockchainResponse, SessionData, SessionResponse2, SignmessageData, SignmessageError, SignmessageResponse, StartmakerData, StartmakerError, StopcoinjoinData, StopcoinjoinError, StopmakerData, StopmakerError, TokenData, TokenError, TokenResponse2, TumblerplanData, TumblerplandeleteData, TumblerplandeleteError, TumblerplandeleteResponse, TumblerplanError, TumblerplanResponse, TumblerstartData, TumblerstartError, TumblerstatusData, TumblerstatusError, TumblerstatusResponse, TumblerstopData, TumblerstopError, UnlockwalletData, UnlockwalletError, UnlockwalletResponse, VersionData, VersionResponse, WallethistoryData, WallethistoryError, WallethistoryResponse, YieldgenreportData, YieldgenreportResponse } from '../types.gen';
+import { configget, configsetting, createwallet, directsend, displaywallet, docoinjoin, freeze, freezebatch, getaddress, getlogs, getOrderbookApiV1ObwatchOrderbookJsonGet, getOrderbookObwatchOrderbookJsonGet, getrescaninfo, getseed, gettimelockaddress, listutxos, listwallets, lockwallet, type Options, recoverwallet, refreshOrderbookGetApiV1ObwatchRefreshorderbookGet, refreshOrderbookGetObwatchRefreshorderbookGet, refreshOrderbookPostApiV1ObwatchRefreshorderbookPost, refreshOrderbookPostObwatchRefreshorderbookPost, rescanblockchain, session, signmessage, startmaker, stopcoinjoin, stopmaker, token, tumblerplan, tumblerplandelete, tumblerstart, tumblerstatus, tumblerstop, unlockwallet, version, wallethistory, yieldgenreport } from '../sdk.gen';
+import type { ConfiggetData, ConfiggetError, ConfiggetResponse, ConfigsettingData, ConfigsettingError, ConfigsettingResponse, CreatewalletData, CreatewalletError, CreatewalletResponse, DirectsendData, DirectsendError, DirectsendResponse, DisplaywalletData, DisplaywalletError, DisplaywalletResponse, DocoinjoinData, DocoinjoinError, FreezebatchData, FreezebatchError, FreezebatchResponse, FreezeData, FreezeError, FreezeResponse, GetaddressData, GetaddressError, GetaddressResponse, GetlogsData, GetlogsResponse, GetOrderbookApiV1ObwatchOrderbookJsonGetData, GetOrderbookObwatchOrderbookJsonGetData, GetrescaninfoData, GetrescaninfoError, GetrescaninfoResponse, GetseedData, GetseedError, GetseedResponse, GettimelockaddressData, GettimelockaddressError, GettimelockaddressResponse, ListutxosData, ListutxosError, ListutxosResponse, ListwalletsData, ListwalletsResponse, LockwalletData, LockwalletError, LockwalletResponse, RecoverwalletData, RecoverwalletError, RecoverwalletResponse, RefreshOrderbookGetApiV1ObwatchRefreshorderbookGetData, RefreshOrderbookGetObwatchRefreshorderbookGetData, RefreshOrderbookPostApiV1ObwatchRefreshorderbookPostData, RefreshOrderbookPostObwatchRefreshorderbookPostData, RescanblockchainData, RescanblockchainError, RescanblockchainResponse, SessionData, SessionResponse2, SignmessageData, SignmessageError, SignmessageResponse, StartmakerData, StartmakerError, StopcoinjoinData, StopcoinjoinError, StopmakerData, StopmakerError, TokenData, TokenError, TokenResponse2, TumblerplanData, TumblerplandeleteData, TumblerplandeleteError, TumblerplandeleteResponse, TumblerplanError, TumblerplanResponse, TumblerstartData, TumblerstartError, TumblerstatusData, TumblerstatusError, TumblerstatusResponse, TumblerstopData, TumblerstopError, UnlockwalletData, UnlockwalletError, UnlockwalletResponse, VersionData, VersionResponse, WallethistoryData, WallethistoryError, WallethistoryResponse, YieldgenreportData, YieldgenreportResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -333,6 +333,29 @@ export const freezeMutation = (options?: Partial<Options<FreezeData>>): UseMutat
     const mutationOptions: UseMutationOptions<FreezeResponse, FreezeError, Options<FreezeData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await freeze({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Freeze Utxos Batch
+ *
+ * Freeze and/or unfreeze several UTXOs in one atomic request (issue #596).
+ *
+ * Mixed directions are allowed in the same batch. Every entry is validated
+ * before anything is written; if any outpoint is malformed or repeated, the
+ * whole request is rejected and nothing on disk changes.
+ */
+export const freezebatchMutation = (options?: Partial<Options<FreezebatchData>>): UseMutationOptions<FreezebatchResponse, FreezebatchError, Options<FreezebatchData>> => {
+    const mutationOptions: UseMutationOptions<FreezebatchResponse, FreezebatchError, Options<FreezebatchData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await freezebatch({
                 ...options,
                 ...fnOptions,
                 throwOnError: true

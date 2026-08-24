@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { ConfiggetData, ConfiggetErrors, ConfiggetResponses, ConfigsettingData, ConfigsettingErrors, ConfigsettingResponses, CorsPreflightOptionsData, CorsPreflightOptionsResponses, CreatewalletData, CreatewalletErrors, CreatewalletResponses, DirectsendData, DirectsendErrors, DirectsendResponses, DisplaywalletData, DisplaywalletErrors, DisplaywalletResponses, DocoinjoinData, DocoinjoinErrors, DocoinjoinResponses, FreezeData, FreezeErrors, FreezeResponses, GetaddressData, GetaddressErrors, GetaddressResponses, GetlogsData, GetlogsResponses, GetOrderbookApiV1ObwatchOrderbookJsonGetData, GetOrderbookApiV1ObwatchOrderbookJsonGetResponses, GetOrderbookObwatchOrderbookJsonGetData, GetOrderbookObwatchOrderbookJsonGetResponses, GetrescaninfoData, GetrescaninfoErrors, GetrescaninfoResponses, GetseedData, GetseedErrors, GetseedResponses, GettimelockaddressData, GettimelockaddressErrors, GettimelockaddressResponses, ListutxosData, ListutxosErrors, ListutxosResponses, ListwalletsData, ListwalletsResponses, LockwalletData, LockwalletErrors, LockwalletResponses, RecoverwalletData, RecoverwalletErrors, RecoverwalletResponses, RefreshOrderbookGetApiV1ObwatchRefreshorderbookGetData, RefreshOrderbookGetApiV1ObwatchRefreshorderbookGetResponses, RefreshOrderbookGetObwatchRefreshorderbookGetData, RefreshOrderbookGetObwatchRefreshorderbookGetResponses, RefreshOrderbookPostApiV1ObwatchRefreshorderbookPostData, RefreshOrderbookPostApiV1ObwatchRefreshorderbookPostResponses, RefreshOrderbookPostObwatchRefreshorderbookPostData, RefreshOrderbookPostObwatchRefreshorderbookPostResponses, RescanblockchainData, RescanblockchainErrors, RescanblockchainResponses, SessionData, SessionResponses, SignmessageData, SignmessageErrors, SignmessageResponses, StartmakerData, StartmakerErrors, StartmakerResponses, StopcoinjoinData, StopcoinjoinErrors, StopcoinjoinResponses, StopmakerData, StopmakerErrors, StopmakerResponses, TokenData, TokenErrors, TokenResponses, TumblerplanData, TumblerplandeleteData, TumblerplandeleteErrors, TumblerplandeleteResponses, TumblerplanErrors, TumblerplanResponses, TumblerstartData, TumblerstartErrors, TumblerstartResponses, TumblerstatusData, TumblerstatusErrors, TumblerstatusResponses, TumblerstopData, TumblerstopErrors, TumblerstopResponses, UnlockwalletData, UnlockwalletErrors, UnlockwalletResponses, VersionData, VersionResponses, WallethistoryData, WallethistoryErrors, WallethistoryResponses, YieldgenreportData, YieldgenreportResponses } from './types.gen';
+import type { ConfiggetData, ConfiggetErrors, ConfiggetResponses, ConfigsettingData, ConfigsettingErrors, ConfigsettingResponses, CorsPreflightOptionsData, CorsPreflightOptionsResponses, CreatewalletData, CreatewalletErrors, CreatewalletResponses, DirectsendData, DirectsendErrors, DirectsendResponses, DisplaywalletData, DisplaywalletErrors, DisplaywalletResponses, DocoinjoinData, DocoinjoinErrors, DocoinjoinResponses, FreezebatchData, FreezebatchErrors, FreezebatchResponses, FreezeData, FreezeErrors, FreezeResponses, GetaddressData, GetaddressErrors, GetaddressResponses, GetlogsData, GetlogsResponses, GetOrderbookApiV1ObwatchOrderbookJsonGetData, GetOrderbookApiV1ObwatchOrderbookJsonGetResponses, GetOrderbookObwatchOrderbookJsonGetData, GetOrderbookObwatchOrderbookJsonGetResponses, GetrescaninfoData, GetrescaninfoErrors, GetrescaninfoResponses, GetseedData, GetseedErrors, GetseedResponses, GettimelockaddressData, GettimelockaddressErrors, GettimelockaddressResponses, ListutxosData, ListutxosErrors, ListutxosResponses, ListwalletsData, ListwalletsResponses, LockwalletData, LockwalletErrors, LockwalletResponses, RecoverwalletData, RecoverwalletErrors, RecoverwalletResponses, RefreshOrderbookGetApiV1ObwatchRefreshorderbookGetData, RefreshOrderbookGetApiV1ObwatchRefreshorderbookGetResponses, RefreshOrderbookGetObwatchRefreshorderbookGetData, RefreshOrderbookGetObwatchRefreshorderbookGetResponses, RefreshOrderbookPostApiV1ObwatchRefreshorderbookPostData, RefreshOrderbookPostApiV1ObwatchRefreshorderbookPostResponses, RefreshOrderbookPostObwatchRefreshorderbookPostData, RefreshOrderbookPostObwatchRefreshorderbookPostResponses, RescanblockchainData, RescanblockchainErrors, RescanblockchainResponses, SessionData, SessionResponses, SignmessageData, SignmessageErrors, SignmessageResponses, StartmakerData, StartmakerErrors, StartmakerResponses, StopcoinjoinData, StopcoinjoinErrors, StopcoinjoinResponses, StopmakerData, StopmakerErrors, StopmakerResponses, TokenData, TokenErrors, TokenResponses, TumblerplanData, TumblerplandeleteData, TumblerplandeleteErrors, TumblerplandeleteResponses, TumblerplanErrors, TumblerplanResponses, TumblerstartData, TumblerstartErrors, TumblerstartResponses, TumblerstatusData, TumblerstatusErrors, TumblerstatusResponses, TumblerstopData, TumblerstopErrors, TumblerstopResponses, UnlockwalletData, UnlockwalletErrors, UnlockwalletResponses, VersionData, VersionResponses, WallethistoryData, WallethistoryErrors, WallethistoryResponses, YieldgenreportData, YieldgenreportResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -160,6 +160,24 @@ export const getseed = <ThrowOnError extends boolean = false>(options: Options<G
  */
 export const freeze = <ThrowOnError extends boolean = false>(options: Options<FreezeData, ThrowOnError>): RequestResult<FreezeResponses, FreezeErrors, ThrowOnError> => (options.client ?? client).post<FreezeResponses, FreezeErrors, ThrowOnError>({
     url: '/api/v1/wallet/{walletname}/freeze',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Freeze Utxos Batch
+ *
+ * Freeze and/or unfreeze several UTXOs in one atomic request (issue #596).
+ *
+ * Mixed directions are allowed in the same batch. Every entry is validated
+ * before anything is written; if any outpoint is malformed or repeated, the
+ * whole request is rejected and nothing on disk changes.
+ */
+export const freezebatch = <ThrowOnError extends boolean = false>(options: Options<FreezebatchData, ThrowOnError>): RequestResult<FreezebatchResponses, FreezebatchErrors, ThrowOnError> => (options.client ?? client).post<FreezebatchResponses, FreezebatchErrors, ThrowOnError>({
+    url: '/api/v1/wallet/{walletname}/freeze-batch',
     ...options,
     headers: {
         'Content-Type': 'application/json',

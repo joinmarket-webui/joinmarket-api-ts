@@ -384,6 +384,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/wallet/{walletname}/freeze-batch:
+    post:
+      summary: Freeze Utxos Batch
+      description: |-
+        Freeze and/or unfreeze several UTXOs in one atomic request (issue #596).
+
+        Mixed directions are allowed in the same batch. Every entry is validated
+        before anything is written; if any outpoint is malformed or repeated, the
+        whole request is rejected and nothing on disk changes.
+      operationId: freezebatch
+      parameters:
+        - name: walletname
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Walletname
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FreezeBatchRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+                title: Response Freezebatch
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
   /api/v1/wallet/{walletname}/configget:
     post:
       summary: Config Get
@@ -1032,6 +1071,13 @@ components:
               minimum: 0
             - type: 'null'
           title: Txfee
+        input_utxos:
+          anyOf:
+            - items:
+                type: string
+              type: array
+            - type: 'null'
+          title: Input Utxos
       type: object
       required:
         - mixdepth
@@ -1043,6 +1089,15 @@ components:
 
         ``amount_sats`` is the amount to send in satoshis; ``0`` means sweep the
         entire mixdepth. ``mixdepth`` is the source account index.
+
+        ``input_utxos`` is an optional explicit list of ``"txid:vout"`` strings
+        (issue #587). When given, exactly those UTXOs are spent and automatic
+        coin selection is skipped entirely, including for sweeps
+        (``amount_sats: 0`` + ``input_utxos`` sweeps only the listed inputs).
+        Every listed UTXO must already be unfrozen and belong to ``mixdepth``;
+        anything unusable is rejected with a reason rather than falling back to
+        automatic selection. Omit the field (the default) to keep the previous
+        auto-selecting behavior; an explicit empty list is always an error.
     DirectSendResponse:
       properties:
         txinfo:
@@ -1077,6 +1132,13 @@ components:
               minimum: 0
             - type: 'null'
           title: Txfee
+        input_utxos:
+          anyOf:
+            - items:
+                type: string
+              type: array
+            - type: 'null'
+          title: Input Utxos
       type: object
       required:
         - mixdepth
@@ -1091,6 +1153,50 @@ components:
         the lower bound of 2 matches the minimum the taker protocol can run with,
         and the upper bound prevents a malformed request from triggering large
         allocations / long-running RPC under the auth boundary.
+
+        ``input_utxos`` is an optional explicit list of ``"txid:vout"`` strings.
+        When given, the CoinJoin spends exactly those UTXOs. Omit the field to
+        preserve automatic coin selection.
+    FreezeBatchEntry:
+      properties:
+        utxo-string:
+          type: string
+          title: Utxo-String
+        freeze:
+          type: boolean
+          title: Freeze
+      type: object
+      required:
+        - utxo-string
+        - freeze
+      title: FreezeBatchEntry
+      description: |-
+        One entry of a POST /api/v1/wallet/{walletname}/freeze-batch request.
+
+        Same field name and hyphenated wire alias as :class:`FreezeRequest`, so a
+        caller migrating from one-at-a-time calls to a batch just wraps the same
+        entries in a list.
+    FreezeBatchRequest:
+      properties:
+        entries:
+          items:
+            $ref: '#/components/schemas/FreezeBatchEntry'
+          type: array
+          maxItems: 500
+          minItems: 1
+          title: Entries
+      type: object
+      required:
+        - entries
+      title: FreezeBatchRequest
+      description: |-
+        POST /api/v1/wallet/{walletname}/freeze-batch request (issue #596).
+
+        Applies every entry atomically: either the whole batch lands or, if any
+        entry is invalid, none of it does. An empty list and a repeated outpoint
+        are both rejected outright rather than treated as a partial no-op, since
+        a duplicate has no well-defined outcome (list order alone would decide
+        it) and an empty list is more likely a client bug than "no preference".
     FreezeRequest:
       properties:
         utxo-string:

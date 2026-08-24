@@ -598,6 +598,60 @@
         }
       }
     },
+    "/api/v1/wallet/{walletname}/freeze-batch": {
+      "post": {
+        "summary": "Freeze Utxos Batch",
+        "description": "Freeze and/or unfreeze several UTXOs in one atomic request (issue #596).\n\nMixed directions are allowed in the same batch. Every entry is validated\nbefore anything is written; if any outpoint is malformed or repeated, the\nwhole request is rejected and nothing on disk changes.",
+        "operationId": "freezebatch",
+        "parameters": [
+          {
+            "name": "walletname",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Walletname"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FreezeBatchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Freezebatch"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/wallet/{walletname}/configget": {
       "post": {
         "summary": "Config Get",
@@ -1568,6 +1622,20 @@
               }
             ],
             "title": "Txfee"
+          },
+          "input_utxos": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input Utxos"
           }
         },
         "type": "object",
@@ -1577,7 +1645,7 @@
           "destination"
         ],
         "title": "DirectSendRequest",
-        "description": "POST /api/v1/wallet/{walletname}/taker/direct-send request.\n\n``amount_sats`` is the amount to send in satoshis; ``0`` means sweep the\nentire mixdepth. ``mixdepth`` is the source account index."
+        "description": "POST /api/v1/wallet/{walletname}/taker/direct-send request.\n\n``amount_sats`` is the amount to send in satoshis; ``0`` means sweep the\nentire mixdepth. ``mixdepth`` is the source account index.\n\n``input_utxos`` is an optional explicit list of ``\"txid:vout\"`` strings\n(issue #587). When given, exactly those UTXOs are spent and automatic\ncoin selection is skipped entirely, including for sweeps\n(``amount_sats: 0`` + ``input_utxos`` sweeps only the listed inputs).\nEvery listed UTXO must already be unfrozen and belong to ``mixdepth``;\nanything unusable is rejected with a reason rather than falling back to\nautomatic selection. Omit the field (the default) to keep the previous\nauto-selecting behavior; an explicit empty list is always an error."
       },
       "DirectSendResponse": {
         "properties": {
@@ -1626,6 +1694,20 @@
               }
             ],
             "title": "Txfee"
+          },
+          "input_utxos": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input Utxos"
           }
         },
         "type": "object",
@@ -1636,7 +1718,45 @@
           "destination"
         ],
         "title": "DoCoinjoinRequest",
-        "description": "POST /api/v1/wallet/{walletname}/taker/coinjoin request.\n\n``counterparties`` is the number of makers requested in the coinjoin;\nthe lower bound of 2 matches the minimum the taker protocol can run with,\nand the upper bound prevents a malformed request from triggering large\nallocations / long-running RPC under the auth boundary."
+        "description": "POST /api/v1/wallet/{walletname}/taker/coinjoin request.\n\n``counterparties`` is the number of makers requested in the coinjoin;\nthe lower bound of 2 matches the minimum the taker protocol can run with,\nand the upper bound prevents a malformed request from triggering large\nallocations / long-running RPC under the auth boundary.\n\n``input_utxos`` is an optional explicit list of ``\"txid:vout\"`` strings.\nWhen given, the CoinJoin spends exactly those UTXOs. Omit the field to\npreserve automatic coin selection."
+      },
+      "FreezeBatchEntry": {
+        "properties": {
+          "utxo-string": {
+            "type": "string",
+            "title": "Utxo-String"
+          },
+          "freeze": {
+            "type": "boolean",
+            "title": "Freeze"
+          }
+        },
+        "type": "object",
+        "required": [
+          "utxo-string",
+          "freeze"
+        ],
+        "title": "FreezeBatchEntry",
+        "description": "One entry of a POST /api/v1/wallet/{walletname}/freeze-batch request.\n\nSame field name and hyphenated wire alias as :class:`FreezeRequest`, so a\ncaller migrating from one-at-a-time calls to a batch just wraps the same\nentries in a list."
+      },
+      "FreezeBatchRequest": {
+        "properties": {
+          "entries": {
+            "items": {
+              "$ref": "#/components/schemas/FreezeBatchEntry"
+            },
+            "type": "array",
+            "maxItems": 500,
+            "minItems": 1,
+            "title": "Entries"
+          }
+        },
+        "type": "object",
+        "required": [
+          "entries"
+        ],
+        "title": "FreezeBatchRequest",
+        "description": "POST /api/v1/wallet/{walletname}/freeze-batch request (issue #596).\n\nApplies every entry atomically: either the whole batch lands or, if any\nentry is invalid, none of it does. An empty list and a repeated outpoint\nare both rejected outright rather than treated as a partial no-op, since\na duplicate has no well-defined outcome (list order alone would decide\nit) and an empty list is more likely a client bug than \"no preference\"."
       },
       "FreezeRequest": {
         "properties": {

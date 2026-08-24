@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Coin control on direct-send:** `input_utxos` on `DirectSendRequest`, an optional list of `txid:vout` strings that pins the exact inputs to spend (joinmarket-ng#587). Omitting it keeps the previous auto-selecting behaviour.
+- **Coin control on coinjoin:** `input_utxos` on `DoCoinjoinRequest`, same shape and semantics as the direct-send field above (joinmarket-ng#587). Not previously synced from the backend even though it shipped alongside the direct-send field.
+- **Batch freeze/unfreeze:** new `freezebatch()` call for `POST /wallet/{walletname}/freeze-batch`, taking a `FreezeBatchRequest` (a list of `{ 'utxo-string', freeze }` entries) so multiple utxos can be frozen/unfrozen in one request instead of one call per utxo (joinmarket-ng#596). The batch is applied atomically — either all entries land or none do.
+- **API Sync:** Picked up backend changes made since v1.0.0 — `amount` and `source` on `HistoryEntry` (with `cj_amount` and `source_mixdepth` now nullable and `role` narrowed to a union), `scan_range` on `RecoverWalletRequest`, `error` on `RescanInfoResponse`, and `confirmations` on `TxInfo`.
+
+### Fixed
+- `scripts/fetch-schema.mjs` importing a default export from `js-yaml`, which has not existed since the bump to v5 and made the script fail to run.
+
 ## [v1.0.0] - 2026-06-28
 
 ### Added

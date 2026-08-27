@@ -61,7 +61,7 @@
     "access": "public"
   },
   "devDependencies": {
-    "@hey-api/openapi-ts": "0.94.2",
+    "@hey-api/openapi-ts": "0.97.0",
     "@tanstack/react-query": "5.90.21",
     "@types/node": "24.10.1",
     "@types/react": "19.2.14",

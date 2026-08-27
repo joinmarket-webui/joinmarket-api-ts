@@ -1,6 +1,6 @@
 {
-  "name": "@joinmarket-webui/joinmarket-ng-api-ts",
-  "version": "1.1.0",
+  "name": "@joinmarket-webui/joinmarket-api-ts",
+  "version": "0.37.1",
   "description": "OpenAPI TypeScript types and client for JoinMarket-NG",
   "license": "MIT",
   "author": "JoinMarket WebUI Org.",
@@ -53,13 +53,13 @@
     "publish:npm": "npm publish --ignore-scripts --access public --@joinmarket-webui:registry=https://registry.npmjs.org",
     "publish:ghr": "npm publish --ignore-scripts --access public --@joinmarket-webui:registry=https://npm.pkg.github.com"
   },
-  "homepage": "https://github.com/joinmarket-webui/joinmarket-ng-api-ts",
+  "homepage": "https://github.com/joinmarket-webui/joinmarket-api-ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/joinmarket-webui/joinmarket-ng-api-ts.git"
+    "url": "git+https://github.com/joinmarket-webui/joinmarket-api-ts.git"
   },
   "bugs": {
-    "url": "https://github.com/joinmarket-webui/joinmarket-ng-api-ts/issues"
+    "url": "https://github.com/joinmarket-webui/joinmarket-api-ts/issues"
   },
   "publishConfig": {
     "access": "public"

@@ -1,4 +1,4 @@
-# joinmarket-ng-api-ts
+# joinmarket-api-ts
 
 OpenAPI TypeScript types and client for JoinMarket-NG (`jmwalletd`).
 
@@ -71,4 +71,3 @@ The project is licensed under the MIT License. See [LICENSE](LICENSE) for detail
 - **Hey API (openapi-ts)**: [heyapi.dev/openapi-ts](https://heyapi.dev/openapi-ts/get-started)
 - **@hey-api/client-fetch**: [heyapi.dev/openapi-ts/clients/fetch](https://heyapi.dev/openapi-ts/clients/fetch)
 - **@tanstack/react-query**: [TanStack/query](https://github.com/TanStack/query)
-

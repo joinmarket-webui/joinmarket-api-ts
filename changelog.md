@@ -6,9 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [v1.1.0] - 2026-08-24
+## [v0.37.1] - 2026-08-27
 
 ### Added
+- **Migration to JoinMarket-NG:** Updated the package to target the new JoinMarket-NG backend OpenAPI specification.
+- **Client & SDK Regeneration:** Fully regenerated all client TypeScript definitions, SDK options, and React Query integration hooks.
 - **Coin control on direct-send:** `input_utxos` on `DirectSendRequest`, an optional list of `txid:vout` strings that pins the exact inputs to spend (joinmarket-ng#587). Omitting it keeps the previous auto-selecting behaviour.
 - **Coin control on coinjoin:** `input_utxos` on `DoCoinjoinRequest`, same shape and semantics as the direct-send field above (joinmarket-ng#587). Not previously synced from the backend even though it shipped alongside the direct-send field.
 - **Batch freeze/unfreeze:** new `freezebatch()` call for `POST /wallet/{walletname}/freeze-batch`, taking a `FreezeBatchRequest` (a list of `{ 'utxo-string', freeze }` entries) so multiple utxos can be frozen/unfrozen in one request instead of one call per utxo (joinmarket-ng#596). The batch is applied atomically — either all entries land or none do.
@@ -17,13 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - `scripts/fetch-schema.mjs` importing a default export from `js-yaml`, which has not existed since the bump to v5 and made the script fail to run.
 
-## [v1.0.0] - 2026-06-28
-
-### Added
-- **Migration to JoinMarket-NG:** Updated the package to target the new JoinMarket-NG backend OpenAPI specification.
-- **Client & SDK Regeneration:** Fully regenerated all client TypeScript definitions, SDK options, and React Query integration hooks.
-- **API Sync:** Synchronized latest API changes from the running JoinMarket-NG backend (e.g., adding `backend` to `GetInfoResponse`).
-
+## [v0.4.0] - 2026-03-16
 
 ### Changed
 - @tanstack/react-query is an optional peer dependency
@@ -44,9 +40,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/joinmarket-webui/joinmarket-ng-api-ts/compare/v1.1.0...HEAD
-[v1.1.0]: https://github.com/joinmarket-webui/joinmarket-ng-api-ts/compare/v1.0.0...v1.1.0
-[v1.0.0]: https://github.com/joinmarket-webui/joinmarket-ng-api-ts/compare/v0.3.0...v1.0.0
-[v0.3.0]: https://github.com/joinmarket-webui/joinmarket-ng-api-ts/compare/v0.2.0...v0.3.0
-[v0.2.0]: https://github.com/joinmarket-webui/joinmarket-ng-api-ts/compare/v0.1.0...v0.2.0
-[v0.1.0]: https://github.com/joinmarket-webui/joinmarket-ng-api-ts/releases/tag/v0.1.0
+[Unreleased]: https://github.com/joinmarket-webui/joinmarket-api-ts/compare/v0.37.1...HEAD
+[v0.37.1]: https://github.com/joinmarket-webui/joinmarket-api-ts/compare/v0.4.0...v0.37.1
+[v0.4.0]: https://github.com/joinmarket-webui/joinmarket-api-ts/compare/v0.3.0...v0.4.0
+[v0.3.0]: https://github.com/joinmarket-webui/joinmarket-api-ts/compare/v0.2.0...v0.3.0
+[v0.2.0]: https://github.com/joinmarket-webui/joinmarket-api-ts/compare/v0.1.0...v0.2.0
+[v0.1.0]: https://github.com/joinmarket-webui/joinmarket-api-ts/releases/tag/v0.1.0

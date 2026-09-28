@@ -3,8 +3,8 @@
 import { type DefaultError, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { configget, configsetting, createwallet, directsend, displaywallet, docoinjoin, freeze, freezebatch, getaddress, getlogs, getOrderbookApiV1ObwatchOrderbookJsonGet, getOrderbookObwatchOrderbookJsonGet, getrescaninfo, getseed, gettimelockaddress, listutxos, listwallets, lockwallet, type Options, recoverwallet, refreshOrderbookGetApiV1ObwatchRefreshorderbookGet, refreshOrderbookGetObwatchRefreshorderbookGet, refreshOrderbookPostApiV1ObwatchRefreshorderbookPost, refreshOrderbookPostObwatchRefreshorderbookPost, rescanblockchain, session, signmessage, startmaker, stopcoinjoin, stopmaker, token, tumblerplan, tumblerplandelete, tumblerstart, tumblerstatus, tumblerstop, unlockwallet, version, wallethistory, yieldgenreport } from '../sdk.gen';
-import type { ConfiggetData, ConfiggetError, ConfiggetResponse, ConfigsettingData, ConfigsettingError, ConfigsettingResponse, CreatewalletData, CreatewalletError, CreatewalletResponse, DirectsendData, DirectsendError, DirectsendResponse, DisplaywalletData, DisplaywalletError, DisplaywalletResponse, DocoinjoinData, DocoinjoinError, FreezebatchData, FreezebatchError, FreezebatchResponse, FreezeData, FreezeError, FreezeResponse, GetaddressData, GetaddressError, GetaddressResponse, GetlogsData, GetlogsResponse, GetOrderbookApiV1ObwatchOrderbookJsonGetData, GetOrderbookObwatchOrderbookJsonGetData, GetrescaninfoData, GetrescaninfoError, GetrescaninfoResponse, GetseedData, GetseedError, GetseedResponse, GettimelockaddressData, GettimelockaddressError, GettimelockaddressResponse, ListutxosData, ListutxosError, ListutxosResponse, ListwalletsData, ListwalletsResponse, LockwalletData, LockwalletError, LockwalletResponse, RecoverwalletData, RecoverwalletError, RecoverwalletResponse, RefreshOrderbookGetApiV1ObwatchRefreshorderbookGetData, RefreshOrderbookGetObwatchRefreshorderbookGetData, RefreshOrderbookPostApiV1ObwatchRefreshorderbookPostData, RefreshOrderbookPostObwatchRefreshorderbookPostData, RescanblockchainData, RescanblockchainError, RescanblockchainResponse, SessionData, SessionResponse2, SignmessageData, SignmessageError, SignmessageResponse, StartmakerData, StartmakerError, StopcoinjoinData, StopcoinjoinError, StopmakerData, StopmakerError, TokenData, TokenError, TokenResponse2, TumblerplanData, TumblerplandeleteData, TumblerplandeleteError, TumblerplandeleteResponse, TumblerplanError, TumblerplanResponse, TumblerstartData, TumblerstartError, TumblerstatusData, TumblerstatusError, TumblerstatusResponse, TumblerstopData, TumblerstopError, UnlockwalletData, UnlockwalletError, UnlockwalletResponse, VersionData, VersionResponse, WallethistoryData, WallethistoryError, WallethistoryResponse, YieldgenreportData, YieldgenreportResponse } from '../types.gen';
+import { configget, configsetting, createwallet, directsend, displaywallet, docoinjoin, freeze, freezebatch, getaddress, getlogs, getOrderbookApiV1ObwatchOrderbookJsonGet, getOrderbookObwatchOrderbookJsonGet, getrescaninfo, getseed, gettimelockaddress, listutxos, listwallets, lockwallet, type Options, recoverwallet, refreshOrderbookGetApiV1ObwatchRefreshorderbookGet, refreshOrderbookGetObwatchRefreshorderbookGet, refreshOrderbookPostApiV1ObwatchRefreshorderbookPost, refreshOrderbookPostObwatchRefreshorderbookPost, rescanblockchain, session, signmessage, startmaker, stopcoinjoin, stopmaker, takerstatus, token, tumblerplan, tumblerplandelete, tumblerstart, tumblerstatus, tumblerstop, unlockwallet, version, wallethistory, yieldgenreport } from '../sdk.gen';
+import type { ConfiggetData, ConfiggetError, ConfiggetResponse, ConfigsettingData, ConfigsettingError, ConfigsettingResponse, CreatewalletData, CreatewalletError, CreatewalletResponse, DirectsendData, DirectsendError, DirectsendResponse, DisplaywalletData, DisplaywalletError, DisplaywalletResponse, DocoinjoinData, DocoinjoinError, FreezebatchData, FreezebatchError, FreezebatchResponse, FreezeData, FreezeError, FreezeResponse, GetaddressData, GetaddressError, GetaddressResponse, GetlogsData, GetlogsResponse, GetOrderbookApiV1ObwatchOrderbookJsonGetData, GetOrderbookObwatchOrderbookJsonGetData, GetrescaninfoData, GetrescaninfoError, GetrescaninfoResponse, GetseedData, GetseedError, GetseedResponse, GettimelockaddressData, GettimelockaddressError, GettimelockaddressResponse, ListutxosData, ListutxosError, ListutxosResponse, ListwalletsData, ListwalletsResponse, LockwalletData, LockwalletError, LockwalletResponse, RecoverwalletData, RecoverwalletError, RecoverwalletResponse, RefreshOrderbookGetApiV1ObwatchRefreshorderbookGetData, RefreshOrderbookGetObwatchRefreshorderbookGetData, RefreshOrderbookPostApiV1ObwatchRefreshorderbookPostData, RefreshOrderbookPostObwatchRefreshorderbookPostData, RescanblockchainData, RescanblockchainError, RescanblockchainResponse, SessionData, SessionResponse2, SignmessageData, SignmessageError, SignmessageResponse, StartmakerData, StartmakerError, StopcoinjoinData, StopcoinjoinError, StopmakerData, StopmakerError, TakerstatusData, TakerstatusError, TakerstatusResponse, TokenData, TokenError, TokenResponse2, TumblerplanData, TumblerplandeleteData, TumblerplandeleteError, TumblerplandeleteResponse, TumblerplanError, TumblerplanResponse, TumblerstartData, TumblerstartError, TumblerstatusData, TumblerstatusError, TumblerstatusResponse, TumblerstopData, TumblerstopError, UnlockwalletData, UnlockwalletError, UnlockwalletResponse, VersionData, VersionResponse, WallethistoryData, WallethistoryError, WallethistoryResponse, YieldgenreportData, YieldgenreportResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -545,6 +545,38 @@ export const stopcoinjoinOptions = (options: Options<StopcoinjoinData>) => query
         return data;
     },
     queryKey: stopcoinjoinQueryKey(options)
+});
+
+export const takerstatusQueryKey = (options: Options<TakerstatusData>) => createQueryKey('takerstatus', options);
+
+/**
+ * Taker Status
+ *
+ * Report the outcome of the most recent single-shot taker/coinjoin call.
+ *
+ * While a run is in progress, reads live off the ``Taker`` instance so
+ * callers can poll for phase changes; once it tears down, falls back to the
+ * snapshot ``_run_coinjoin`` took right before doing so. Returns an "empty"
+ * response (``status`` and ``txid`` both ``None``) if no taker run has
+ * happened yet this session -- that is not itself evidence of anything.
+ *
+ * ``running`` reflects the single-shot ``taker/coinjoin`` state specifically
+ * (not ``state.taker_running``, which is also true while a tumbler plan is
+ * driving its own takers internally): a tumble in progress must not be
+ * reported as "running" here while showing a stale snapshot from a previous
+ * single-shot call underneath it.
+ */
+export const takerstatusOptions = (options: Options<TakerstatusData>) => queryOptions<TakerstatusResponse, TakerstatusError, TakerstatusResponse, ReturnType<typeof takerstatusQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await takerstatus({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: takerstatusQueryKey(options)
 });
 
 /**

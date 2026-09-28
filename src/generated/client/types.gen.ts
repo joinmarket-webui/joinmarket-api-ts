@@ -124,6 +124,18 @@ export type CreateWalletResponse = {
  * anything unusable is rejected with a reason rather than falling back to
  * automatic selection. Omit the field (the default) to keep the previous
  * auto-selecting behavior; an explicit empty list is always an error.
+ *
+ * ``rbf`` controls BIP125 replacement signaling and defaults to ``True``.
+ * Set it to ``False`` to retain anti-fee-sniping locktime without opting in
+ * to replacement.
+ *
+ * ``txfee`` sets the miner fee for this send only, with the reference
+ * ``[POLICY] tx_fees`` semantics: ``1``-``1000`` is a block confirmation
+ * target, anything above is a rate in sat/kvB (``5000`` is 5 sat/vB). It
+ * takes precedence over a ``configset`` ``tx_fees`` value. Omit it or send
+ * ``0`` to use the configured fee policy. A value beyond the money supply
+ * is rejected here rather than silently falling back to the configured
+ * policy, so an explicit fee is never replaced by a different one.
  */
 export type DirectSendRequest = {
     /**
@@ -146,6 +158,10 @@ export type DirectSendRequest = {
      * Input Utxos
      */
     input_utxos?: Array<string> | null;
+    /**
+     * Rbf
+     */
+    rbf?: boolean;
 };
 
 /**
@@ -170,6 +186,12 @@ export type DirectSendResponse = {
  * ``input_utxos`` is an optional explicit list of ``"txid:vout"`` strings.
  * When given, the CoinJoin spends exactly those UTXOs. Omit the field to
  * preserve automatic coin selection.
+ *
+ * ``txfee`` sets the miner fee for this CoinJoin only, with the same
+ * semantics and bounds as on ``DirectSendRequest``: ``1``-``1000`` is a
+ * block target, anything above is a rate in sat/kvB. It takes precedence
+ * over a ``configset`` ``tx_fees`` value; omit it or send ``0`` to use the
+ * configured fee policy.
  */
 export type DoCoinjoinRequest = {
     /**
@@ -403,6 +425,14 @@ export type HistoryEntry = {
      */
     broadcast_method?: string;
     /**
+     * Broadcast Policy
+     */
+    broadcast_policy?: string;
+    /**
+     * Broadcast Fallback Reason
+     */
+    broadcast_fallback_reason?: string;
+    /**
      * Network
      */
     network?: string;
@@ -562,6 +592,18 @@ export type SessionResponse = {
      * Descriptor Wallet Name
      */
     descriptor_wallet_name?: string | null;
+    /**
+     * Broadcast Policy
+     */
+    broadcast_policy?: string | null;
+    /**
+     * Broadcast Method
+     */
+    broadcast_method?: string | null;
+    /**
+     * Broadcast Fallback Reason
+     */
+    broadcast_fallback_reason?: string | null;
 };
 
 /**
@@ -628,6 +670,53 @@ export type StartMakerRequest = {
      * Minsize
      */
     minsize: string;
+};
+
+/**
+ * TakerStatusResponse
+ *
+ * GET /api/v1/wallet/{walletname}/taker/status response.
+ *
+ * Reports the outcome of the most recent single-shot ``taker/coinjoin``
+ * call (or the live one, while ``running`` is true), mirroring the
+ * status/txid/error shape of ``TumblerPhaseResponse`` so a caller has
+ * real evidence of what happened instead of inferring it from wallet-level
+ * side effects such as a changed utxo set (issue #627).
+ *
+ * ``status`` is a ``TakerState`` value (e.g. ``"complete"``, ``"failed"``,
+ * ``"cancelled"``, ``"broadcasting"``) or ``None`` if no taker run has
+ * happened yet this session. A ``txid`` being present does not by itself
+ * mean the CoinJoin is final: check ``status == "complete"`` for a good
+ * broadcast, and confirmation status separately via the wallet history.
+ *
+ * Even ``status == "complete"`` is not on its own a verified broadcast: with
+ * a peer policy that allows delivery without local mempool access (e.g.
+ * ``broadcast_method`` starting with ``"makers-unverified:"``), the taker
+ * reports completion once a maker accepted delivery, not once it has
+ * confirmed the tx is actually in the mempool. Check ``broadcast_method``
+ * to tell the two apart before wording a success message.
+ */
+export type TakerStatusResponse = {
+    /**
+     * Running
+     */
+    running: boolean;
+    /**
+     * Status
+     */
+    status?: string | null;
+    /**
+     * Txid
+     */
+    txid?: string | null;
+    /**
+     * Error
+     */
+    error?: string | null;
+    /**
+     * Broadcast Method
+     */
+    broadcast_method?: string | null;
 };
 
 /**
@@ -1893,6 +1982,36 @@ export type StopcoinjoinResponses = {
      */
     202: unknown;
 };
+
+export type TakerstatusData = {
+    body?: never;
+    path: {
+        /**
+         * Walletname
+         */
+        walletname: string;
+    };
+    query?: never;
+    url: '/api/v1/wallet/{walletname}/taker/status';
+};
+
+export type TakerstatusErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type TakerstatusError = TakerstatusErrors[keyof TakerstatusErrors];
+
+export type TakerstatusResponses = {
+    /**
+     * Successful Response
+     */
+    200: TakerStatusResponse;
+};
+
+export type TakerstatusResponse = TakerstatusResponses[keyof TakerstatusResponses];
 
 export type StartmakerData = {
     body: StartMakerRequest;
